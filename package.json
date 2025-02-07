@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build && ",
-    "postbuild": "cp ./recipes .next/server/app/recipes",
+    "postbuild": "cp recipes .next/server/app/recipes",
     "start": "next start",
     "lint": "next lint"
   },
