@@ -1,27 +1,45 @@
 {
-  "name": "cook-cli",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "gray-matter": "^4.0.3",
-    "next": "15.1.6",
-    "react-dom": "^19.0.0",
-    "react": "^19.0.0"
-  },
-  "devDependencies": {
-    "@cooklang/cooklang-ts": "^1.2.7",
-    "@eslint/eslintrc": "^3",
-    "@types/node": "^20",
-    "@types/react-dom": "^19",
-    "@types/react": "^19",
-    "eslint-config-next": "15.1.6",
-    "eslint": "^9",
-    "typescript": "^5"
-  }
+	"name": "cook-cli",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"build": "next build",
+		"dev": "next dev --turbopack",
+		"fix": "npm run format && npm run lint",
+		"format": "npx @biomejs/biome format --write",
+		"lint": "npx @biomejs/biome lint --write",
+		"start": "next start"
+	},
+	"dependencies": {
+		"@heroui/link": "^2.2.8",
+		"@heroui/navbar": "^2.2.9",
+		"@heroui/switch": "2.2.8",
+		"@heroui/system": "2.4.6",
+		"@heroui/table": "^2.2.9",
+		"@heroui/theme": "2.4.5",
+		"@react-aria/ssr": "3.9.7",
+		"@react-aria/visually-hidden": "3.8.18",
+		"clsx": "2.1.1",
+		"framer-motion": "11.13.1",
+		"gray-matter": "^4.0.3",
+		"intl-messageformat": "^10.5.0",
+		"next": "15.1.6",
+		"next-themes": "^0.4.4",
+		"react": "18.2.0",
+		"react-dom": "18.2.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@cooklang/cooklang-ts": "^1.2.7",
+		"@react-types/shared": "3.25.0",
+		"@types/node": "^20",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"autoprefixer": "10.4.19",
+		"postcss": "8.4.49",
+		"prettier": "3.3.3",
+		"tailwind-variants": "0.1.20",
+		"tailwindcss": "3.4.16",
+		"typescript": "5.6.3"
+	}
 }
