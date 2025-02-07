@@ -1,28 +1,27 @@
 {
   "name": "cook-cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "build": "npx @11ty/eleventy",
-    "dev": "npx @11ty/eleventy --serve"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/whatjackhasmade/cookcli.git"
-  },
-  "keywords": [],
-  "author": "jackpritchard",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/whatjackhasmade/cookcli/issues"
-  },
-  "homepage": "https://github.com/whatjackhasmade/cookcli#readme",
-  "devDependencies": {
-    "@11ty/eleventy": "^3.0.0",
-    "@cooklang/cooklang-ts": "^1.2.7"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "gray-matter": "^4.0.3"
+    "gray-matter": "^4.0.3",
+    "next": "15.1.6",
+    "react-dom": "^19.0.0",
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@cooklang/cooklang-ts": "^1.2.7",
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react-dom": "^19",
+    "@types/react": "^19",
+    "eslint-config-next": "15.1.6",
+    "eslint": "^9",
+    "typescript": "^5"
   }
 }

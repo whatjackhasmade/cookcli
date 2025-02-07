@@ -1,9 +1,0 @@
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #15151a;
-  color: white;
-}
-
-section + section {
-  margin-top: 1rem;
-}

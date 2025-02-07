@@ -45,7 +45,9 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("recipes", function (collectionApi) {
-		return collectionApi.getFilteredByGlob("**/*.cook");
+		return collectionApi.getFilteredByGlob("**/*.cook").sort((a, b) => {
+      return a.data.metadata.title - b.data.metadata.title;
+    });
 	});
 };
 
