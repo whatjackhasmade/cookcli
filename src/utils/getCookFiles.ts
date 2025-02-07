@@ -2,14 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 
 interface GetCookFilesArgs {
-  dir: string;
+  dir?: string;
   fileList?: string[];
 }
 
-export async function getCookFiles({
-  dir,
-  fileList = [],
-}: GetCookFilesArgs): Promise<string[]> {
+export async function getCookFiles({ dir = `./src/recipes`, fileList = [], }: GetCookFilesArgs = {}): Promise<string[]> {
   const files = await fs.promises.readdir(dir);
 
   for (const file of files) {

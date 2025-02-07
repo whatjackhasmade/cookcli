@@ -3,12 +3,12 @@ import Link from "next/link";
 import { getRecipeData } from "cook/utils/getRecipeData";
 
 export default async function Home() {
-  const cookFiles = await getCookFiles({ dir: './recipes' });
+  const cookFiles = await getCookFiles();
   const cookFilesWithData = await Promise.all(cookFiles.map(getRecipeData));
 
   // Group files by category (it's the second part of the path)
   const categories = cookFilesWithData.reduce((acc, file) => {
-    const category = file.path.split('/')[1];
+    const category = file.path.split('/')[2];
     acc[category] = acc[category] || [];
     acc[category].push(file);
     return acc;
