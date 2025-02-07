@@ -6,7 +6,9 @@ interface GetCookFilesArgs {
   fileList?: string[];
 }
 
-export async function getCookFiles({ dir = `./src/recipes`, fileList = [], }: GetCookFilesArgs = {}): Promise<string[]> {
+const recipesPath = process.cwd() + "/src/recipes"
+
+export async function getCookFiles({ dir = recipesPath, fileList = [], }: GetCookFilesArgs = {}): Promise<string[]> {
   const files = await fs.promises.readdir(dir);
 
   for (const file of files) {

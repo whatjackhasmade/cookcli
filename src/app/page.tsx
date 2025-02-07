@@ -8,7 +8,8 @@ export default async function Home() {
 
   // Group files by category (it's the second part of the path)
   const categories = cookFilesWithData.reduce((acc, file) => {
-    const category = file.path.split('/')[2];
+    const pathParts = file.path.split('/');
+    const category = pathParts[pathParts.length - 2];
     acc[category] = acc[category] || [];
     acc[category].push(file);
     return acc;
