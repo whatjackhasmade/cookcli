@@ -1,0 +1,28 @@
+{
+  "name": "cook-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx @11ty/eleventy",
+    "dev": "npx @11ty/eleventy --serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whatjackhasmade/cookcli.git"
+  },
+  "keywords": [],
+  "author": "jackpritchard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/whatjackhasmade/cookcli/issues"
+  },
+  "homepage": "https://github.com/whatjackhasmade/cookcli#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@cooklang/cooklang-ts": "^1.2.7"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3"
+  }
+}

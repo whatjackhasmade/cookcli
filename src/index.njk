@@ -1,0 +1,8 @@
+<h1>All recipes</h1>
+<ul>
+  {% for recipe in collections.recipes %}
+    <li>
+      <a href="{{ recipe.url }}">{{ recipe.data.metadata.title }}</a>
+    </li>
+  {% endfor %}
+</ul>

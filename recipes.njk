@@ -1,0 +1,10 @@
+---
+pagination:
+  data: collections.recipes
+  size: 1
+  alias: recipe
+permalink: "recipes/{{ recipe.fileSlug }}/"
+layout: recipe.njk
+---
+
+{{ recipe.content | safe }}
