@@ -2,7 +2,7 @@ import { getCookFiles } from "@/utils/getCookFiles";
 import Link from "next/link";
 import { getRecipeData } from "@/utils/getRecipeData";
 
- async function getFormattedData() {
+async function getFormattedData() {
 	const cookFiles = await getCookFiles();
 	const cookFilesWithData = await Promise.all(cookFiles.map(getRecipeData));
 

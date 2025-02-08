@@ -17,9 +17,5 @@ module.exports = {
 	},
 	darkMode: "class",
 	plugins: [heroui()],
-	safelist: [
-    "text-xl",
-    "mx-auto",
-		"list-decimal"
-  ],
+	safelist: ["text-xl", "mx-auto", "list-decimal"],
 };

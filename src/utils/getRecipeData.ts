@@ -11,6 +11,7 @@ export async function getRecipeData(path: string) {
 		metadata,
 		path,
 		ingredients: recipe.ingredients,
+		slug: path.split("/").pop()?.split(".")[0],
 		steps: recipe.steps,
 	};
 }
