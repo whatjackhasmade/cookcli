@@ -15,12 +15,9 @@ export function Header() {
 	return (
 		<Navbar position="static">
 			<NavbarContent className="container mx-auto max-w-3xl pt-16 px-6 flex-grow">
-				{menuItems.map((item, index) => (
+				{menuItems.map((item) => (
 					<NavbarItem
-						key={`${item}-${
-							// biome-ignore lint/suspicious/noArrayIndexKey: <these are hardcoded so won't change>
-							index
-						}`}
+						key={item.label}
 					>
 						<Link
 							next={{
