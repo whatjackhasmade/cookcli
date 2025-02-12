@@ -52,9 +52,9 @@ export function Recipe(recipe: Recipe) {
 					<TableColumn>Quantity</TableColumn>
 				</TableHeader>
 				<TableBody emptyContent={"No ingredients in this recipe."}>
-					{recipe.ingredients.map((ingredient) => (
+					{recipe.ingredients.sort((a, b) => a.name.localeCompare(b.name)).map((ingredient) => (
 						<TableRow key={JSON.stringify(ingredient)}>
-							<TableCell>{ingredient.name}</TableCell>
+							<TableCell>{ingredient.name[0].toUpperCase() + ingredient.name.slice(1)}</TableCell>
 							<TableCell>
 								{ingredient.quantity} {ingredient.units}
 							</TableCell>
