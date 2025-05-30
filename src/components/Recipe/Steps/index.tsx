@@ -6,10 +6,10 @@ function keyFromStep(step: Step[number]) {
   return JSON.stringify(step);
 }
 
-export default function Steps({ recipe }: { recipe: Recipe }) {
+export default function Steps({ steps }: { steps: Recipe['steps'] }) {
   return (
 	  <ol className="flex gap-4 flex-col mb-2 list-decimal">
-      {recipe.steps.map((stepGroup) => (
+      {steps.map((stepGroup) => (
         <li key={JSON.stringify(stepGroup)}>
           {stepGroup.map((step) => {
             switch (step.type) {
