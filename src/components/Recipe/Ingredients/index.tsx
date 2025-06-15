@@ -19,6 +19,8 @@ export default function Ingredients({
 		a.name.localeCompare(b.name),
 	);
 
+	const filteredIngredients = sortedIngredients.filter((ingredient) => ingredient.quantity !== 'some');
+
 	return (
 		<Table
 			aria-label="Ingredients list"
@@ -30,7 +32,7 @@ export default function Ingredients({
 				<TableColumn>Quantity</TableColumn>
 			</TableHeader>
 			<TableBody emptyContent={"No ingredients in this recipe."}>
-				{sortedIngredients.map((ingredient) => (
+				{filteredIngredients.map((ingredient) => (
 					<TableRow key={JSON.stringify(ingredient)}>
 						<TableCell>{uppercaseFirstLetter(ingredient.name)}</TableCell>
 						<TableCell>

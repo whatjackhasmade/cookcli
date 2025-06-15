@@ -31,7 +31,7 @@ export default function Steps({ steps }: { steps: Recipe['steps'] }) {
                         marginLeft: '3px',
                       }}
                     >
-                      ({step.quantity} {step.units})
+                      ({step.quantity}{step.units ? ` ${step.units}` : ''})
                     </span>
                   </React.Fragment>
                 );
