@@ -1,9 +1,8 @@
-import NextLink, { type LinkProps as NextLinkProps } from "next/link";
-
 import {
 	Link as HeroLink,
 	type LinkProps as HeroLinkProps,
 } from "@heroui/link";
+import NextLink, { type LinkProps as NextLinkProps } from "next/link";
 
 interface LinkProps extends HeroLinkProps {
 	children: React.ReactNode;

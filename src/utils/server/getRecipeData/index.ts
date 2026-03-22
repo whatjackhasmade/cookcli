@@ -1,6 +1,6 @@
 import fs from "node:fs";
-import matter from "gray-matter";
 import { Recipe } from "@cooklang/cooklang-ts";
+import matter from "gray-matter";
 
 export async function getRecipeData(path: string) {
 	const cookFileContent = await fs.promises.readFile(path, "utf-8");

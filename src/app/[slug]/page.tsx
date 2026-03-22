@@ -1,6 +1,5 @@
-import { getCookFiles } from "@/utils/getCookFiles";
-import { getRecipeData } from "@/utils/getRecipeData";
-import { Recipe } from "@/components/Recipe";
+import { RecipeWithContext } from "@/components/Recipe/Parent";
+import { getCookFiles, getRecipeData } from "@/utils/server";
 
 export default async function Page({
 	params,
@@ -17,5 +16,5 @@ export default async function Page({
 
 	const data = await getRecipeData(cookFile);
 
-	return <Recipe {...data} />;
+	return <RecipeWithContext recipe={data} />;
 }

@@ -6,20 +6,22 @@ import {
 	TableHeader,
 	TableRow,
 } from "@heroui/table";
-import type { Recipe } from "../types";
+import { useRecipe } from "../context";
 
 function uppercaseFirstLetter(str: string) {
 	return str[0].toUpperCase() + str.slice(1);
 }
 
-export default function Ingredients({
-	ingredients,
-}: { ingredients: Recipe["ingredients"] }) {
+export default function Ingredients() {
+	const { ingredients } = useRecipe();
+
 	const sortedIngredients = ingredients.sort((a, b) =>
 		a.name.localeCompare(b.name),
 	);
 
-	const filteredIngredients = sortedIngredients.filter((ingredient) => ingredient.quantity !== 'some');
+	const filteredIngredients = sortedIngredients.filter(
+		(ingredient) => ingredient.quantity !== "some",
+	);
 
 	return (
 		<Table

@@ -1,2 +1,1 @@
-export * from "./getCookFiles";
-export * from "./getRecipeData";
+export * from "./isValidNumber";

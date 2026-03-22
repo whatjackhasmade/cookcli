@@ -1,6 +1,5 @@
-import { getCookFiles } from "@/utils/getCookFiles";
 import Link from "next/link";
-import { getRecipeData } from "@/utils/getRecipeData";
+import { getCookFiles, getRecipeData } from "@/utils/server";
 
 async function getFormattedData() {
 	const cookFiles = await getCookFiles();

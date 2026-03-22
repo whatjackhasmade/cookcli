@@ -1,61 +1,62 @@
-import React from "react";
-import type { Recipe } from "../types";
 import type { Step } from "@cooklang/cooklang-ts";
+import React from "react";
+import { useRecipe } from "../context";
 
 function keyFromStep(step: Step[number]) {
-  return JSON.stringify(step);
+	return JSON.stringify(step);
 }
 
-export default function Steps({ steps }: { steps: Recipe['steps'] }) {
-  return (
-	  <ol className="flex gap-4 flex-col mb-2 list-decimal">
-      {steps.map((stepGroup) => (
-        <li key={JSON.stringify(stepGroup)}>
-          {stepGroup.map((step) => {
-            switch (step.type) {
-              case "text":
-                return <span key={keyFromStep(step)}>{step.value}</span>;
-              case "ingredient":
-                return (
-                  <React.Fragment key={keyFromStep(step)}>
-                    <span
-                      style={{
-                        color: "#ffa238",
-                      }}
-                    >
-                      {step.name}
-                    </span>
-                    <span
-                      style={{
-                        color: "#fb8536",
-                        marginLeft: '3px',
-                      }}
-                    >
-                      ({step.quantity}{step.units ? ` ${step.units}` : ''})
-                    </span>
-                  </React.Fragment>
-                );
-              case "timer":
-                return (
-                  <span
-                    key={keyFromStep(step)}
-                    style={{
-                      color: "#38e4ff",
-                    }}
-                  >
-                    {step.quantity} {step.units}
-                  </span>
-                );
-              case "cookware":
-                return (
-                  <span key={keyFromStep(step)}>
-                    {step.name}
-                  </span>
-                );
-            }
-          })}
-        </li>
-      ))}
-    </ol>
-  );
+export default function Steps() {
+	const { steps } = useRecipe();
+
+	return (
+		<ol className="flex gap-4 flex-col mb-2 list-decimal">
+			{steps.map((stepGroup) => (
+				<li key={JSON.stringify(stepGroup)}>
+					{stepGroup.map((step) => {
+						switch (step.type) {
+							case "text":
+								return <span key={keyFromStep(step)}>{step.value}</span>;
+							case "ingredient":
+								return (
+									<React.Fragment key={keyFromStep(step)}>
+										<span
+											style={{
+												color: "#ffa238",
+											}}
+										>
+											{step.name}
+										</span>
+										<span
+											style={{
+												color: "#fb8536",
+												marginLeft: "3px",
+											}}
+										>
+											({step.quantity}
+											{step.units ? ` ${step.units}` : ""})
+										</span>
+									</React.Fragment>
+								);
+							case "timer":
+								return (
+									<span
+										key={keyFromStep(step)}
+										style={{
+											color: "#38e4ff",
+										}}
+									>
+										{step.quantity} {step.units}
+									</span>
+								);
+							case "cookware":
+								return <span key={keyFromStep(step)}>{step.name}</span>;
+							default:
+								return null;
+						}
+					})}
+				</li>
+			))}
+		</ol>
+	);
 }
