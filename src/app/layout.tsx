@@ -1,11 +1,9 @@
 import "@/styles/globals.css";
-import type { Metadata, Viewport } from "next";
 import clsx from "clsx";
-
-import { Providers } from "@/components/Providers";
-
-import { fontSans } from "@/config/fonts";
+import type { Metadata, Viewport } from "next";
 import { Header } from "@/components/Header";
+import { Providers } from "@/components/Providers";
+import { fontSans } from "@/config/fonts";
 
 export const metadata: Metadata = {
 	title: {

@@ -13,7 +13,8 @@ function uppercaseFirstLetter(str: string) {
 }
 
 export default function Ingredients() {
-	const { ingredients } = useRecipe();
+	const { ingredients, checkedIngredients, setCheckedIngredients } =
+		useRecipe();
 
 	const sortedIngredients = ingredients.sort((a, b) =>
 		a.name.localeCompare(b.name),
@@ -28,6 +29,11 @@ export default function Ingredients() {
 			aria-label="Ingredients list"
 			className="mb-5"
 			selectionMode="multiple"
+			selectedKeys={checkedIngredients}
+			onSelectionChange={(value) => {
+				console.log(value);
+				setCheckedIngredients(value);
+			}}
 		>
 			<TableHeader>
 				<TableColumn>Ingredient</TableColumn>

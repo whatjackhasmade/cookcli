@@ -1,13 +1,20 @@
 import type { Step } from "@cooklang/cooklang-ts";
-import React from "react";
 import { useRecipe } from "../context";
 
 function keyFromStep(step: Step[number]) {
 	return JSON.stringify(step);
 }
 
+import type { Key } from "@react-types/shared";
+import type { CSSProperties } from "react";
+
+const style: CSSProperties = {
+	// @ts-expect-error: Allow custom CSS variable
+	"--color": "#ffa238",
+};
+
 export default function Steps() {
-	const { steps } = useRecipe();
+	const { steps, checkedIngredients, setCheckedIngredients } = useRecipe();
 
 	return (
 		<ol className="flex gap-4 flex-col mb-2 list-decimal">
@@ -19,7 +26,32 @@ export default function Steps() {
 								return <span key={keyFromStep(step)}>{step.value}</span>;
 							case "ingredient":
 								return (
-									<React.Fragment key={keyFromStep(step)}>
+									<button
+										style={style}
+										className={
+											checkedIngredients === "all" ||
+											checkedIngredients.has(keyFromStep(step))
+												? "strikethrough"
+												: undefined
+										}
+										key={keyFromStep(step)}
+										type="button"
+										onClick={() => {
+											const newKey = keyFromStep(step);
+
+											setCheckedIngredients((prev) => {
+												if (prev === "all") {
+													return new Set<Key>([newKey]);
+												} else if (prev.has(newKey)) {
+													const newSet = new Set(prev);
+													newSet.delete(newKey);
+													return newSet;
+												} else {
+													return new Set<Key>([...Array.from(prev), newKey]);
+												}
+											});
+										}}
+									>
 										<span
 											style={{
 												color: "#ffa238",
@@ -36,7 +68,7 @@ export default function Steps() {
 											({step.quantity}
 											{step.units ? ` ${step.units}` : ""})
 										</span>
-									</React.Fragment>
+									</button>
 								);
 							case "timer":
 								return (
