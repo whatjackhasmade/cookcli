@@ -30,10 +30,7 @@ export default function Ingredients() {
 			className="mb-5"
 			selectionMode="multiple"
 			selectedKeys={checkedIngredients}
-			onSelectionChange={(value) => {
-				console.log(value);
-				setCheckedIngredients(value);
-			}}
+			onSelectionChange={setCheckedIngredients}
 		>
 			<TableHeader>
 				<TableColumn>Ingredient</TableColumn>
