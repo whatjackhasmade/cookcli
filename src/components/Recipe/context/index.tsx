@@ -60,7 +60,9 @@ interface RecipeProviderProps {
 }
 
 export function RecipeProvider({ children, recipe }: RecipeProviderProps) {
-	const [servings, setServings] = useState<number>(recipe.metadata.servings);
+	const [servings, setServings] = useState<number>(
+		isValidNumber(recipe.metadata.servings) ? recipe.metadata.servings : 1,
+	);
 
 	const [checkedIngredients, setCheckedIngredients] = useState<Selection>(
 		new Set(),

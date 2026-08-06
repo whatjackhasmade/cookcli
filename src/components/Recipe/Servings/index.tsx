@@ -3,8 +3,9 @@ import { useRecipe } from "../context";
 
 export default function Servings() {
 	const { recipe, servings, setServings } = useRecipe();
+	const defaultServings = recipe.metadata.servings;
 
-	if (!isValidNumber(recipe.metadata.servings)) {
+	if (!isValidNumber(defaultServings)) {
 		return null;
 	}
 
@@ -79,7 +80,7 @@ export default function Servings() {
 						color: "#818181",
 					}}
 					type="button"
-					onClick={() => setServings(recipe.metadata.servings)}
+					onClick={() => setServings(defaultServings)}
 				>
 					Reset
 				</button>
