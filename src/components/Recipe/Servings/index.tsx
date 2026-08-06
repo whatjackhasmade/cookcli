@@ -46,9 +46,12 @@ export default function Servings() {
 						}}
 						type="text"
 						value={servings}
-						onChange={(event) =>
-							setServings(Number.parseInt(event.target.value, 10))
-						}
+						onChange={(event) => {
+							const value = Number.parseInt(event.target.value, 10);
+							if (isValidNumber(value) && value > 0) {
+								setServings(value);
+							}
+						}}
 					/>
 					<button
 						style={{
