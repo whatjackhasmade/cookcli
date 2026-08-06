@@ -1,13 +1,7 @@
 "use client";
 
 import type { Selection } from "@react-types/shared";
-import {
-	type ComponentType,
-	createContext,
-	type ReactNode,
-	useContext,
-	useState,
-} from "react";
+import { createContext, type ReactNode, useContext, useState } from "react";
 import { isValidNumber } from "@/utils";
 import type { Recipe } from "../types";
 
@@ -108,19 +102,4 @@ export function RecipeProvider({ children, recipe }: RecipeProviderProps) {
 
 export function useRecipe() {
 	return useContext(RecipeContext);
-}
-
-export function withRecipe<P>(
-	Component: ComponentType<P>,
-	options: Omit<RecipeProviderProps, "children">,
-) {
-	return function WithRecipe(props: P & Record<string, unknown>) {
-		const { recipe } = options;
-
-		return (
-			<RecipeProvider recipe={recipe}>
-				<Component {...props} />
-			</RecipeProvider>
-		);
-	};
 }
