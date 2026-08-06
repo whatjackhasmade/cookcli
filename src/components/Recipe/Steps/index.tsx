@@ -1,8 +1,15 @@
 import type { Step } from "@cooklang/cooklang-ts";
 import { useRecipe } from "../context";
 
-function keyFromStep(step: Step[number]) {
-	return JSON.stringify(step);
+// Position-based, deliberately excludes step.quantity: that value is
+// recalculated per serving-size change, so including it would change the
+// key (and silently drop checked state) every time servings are adjusted.
+function keyFromStep(
+	step: Step[number],
+	groupIndex: number,
+	stepIndex: number,
+) {
+	return `${groupIndex}-${stepIndex}-${step.type}-${"name" in step ? step.name : ""}`;
 }
 
 import type { Key } from "@react-types/shared";
@@ -18,26 +25,32 @@ export default function Steps() {
 
 	return (
 		<ol className="flex gap-4 flex-col mb-2 list-decimal">
-			{steps.map((stepGroup) => (
-				<li key={JSON.stringify(stepGroup)}>
-					{stepGroup.map((step) => {
+			{steps.map((stepGroup, groupIndex) => (
+				<li key={groupIndex}>
+					{stepGroup.map((step, stepIndex) => {
 						switch (step.type) {
 							case "text":
-								return <span key={keyFromStep(step)}>{step.value}</span>;
+								return (
+									<span key={keyFromStep(step, groupIndex, stepIndex)}>
+										{step.value}
+									</span>
+								);
 							case "ingredient":
 								return (
 									<button
 										style={style}
 										className={
 											checkedIngredients === "all" ||
-											checkedIngredients.has(keyFromStep(step))
+											checkedIngredients.has(
+												keyFromStep(step, groupIndex, stepIndex),
+											)
 												? "strikethrough"
 												: undefined
 										}
-										key={keyFromStep(step)}
+										key={keyFromStep(step, groupIndex, stepIndex)}
 										type="button"
 										onClick={() => {
-											const newKey = keyFromStep(step);
+											const newKey = keyFromStep(step, groupIndex, stepIndex);
 
 											setCheckedIngredients((prev) => {
 												if (prev === "all") {
@@ -73,7 +86,7 @@ export default function Steps() {
 							case "timer":
 								return (
 									<span
-										key={keyFromStep(step)}
+										key={keyFromStep(step, groupIndex, stepIndex)}
 										style={{
 											color: "#38e4ff",
 										}}
@@ -82,7 +95,11 @@ export default function Steps() {
 									</span>
 								);
 							case "cookware":
-								return <span key={keyFromStep(step)}>{step.name}</span>;
+								return (
+									<span key={keyFromStep(step, groupIndex, stepIndex)}>
+										{step.name}
+									</span>
+								);
 							default:
 								return null;
 						}
