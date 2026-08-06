@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { RecipeWithContext } from "@/components/Recipe/Parent";
 import { getCookFiles, getRecipeData } from "@/utils/server";
 
@@ -11,7 +12,7 @@ export default async function Page({
 	const cookFile = cookFiles.find((file) => file.endsWith(`${slug}.cook`));
 
 	if (!cookFile) {
-		throw new Error(`No cook file found for slug ${slug}`);
+		notFound();
 	}
 
 	const data = await getRecipeData(cookFile);
