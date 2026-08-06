@@ -1,8 +1,10 @@
-import type { Ingredient } from "@cooklang/cooklang-ts";
+import type { FlatIngredientItem } from "@/utils/server";
 import { describe, expect, it } from "vitest";
 import { modifyIngredientQuantity } from "./index";
 
-function ingredient(overrides: Partial<Ingredient> = {}): Ingredient {
+function ingredient(
+	overrides: Partial<FlatIngredientItem> = {},
+): FlatIngredientItem {
 	return {
 		type: "ingredient",
 		name: "flour",

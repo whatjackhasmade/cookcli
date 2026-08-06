@@ -1,14 +1,10 @@
-import type { Step } from "@cooklang/cooklang-ts";
+import type { FlatItem } from "@/utils/server";
 import { useRecipe } from "../context";
 
 // Position-based, deliberately excludes step.quantity: that value is
 // recalculated per serving-size change, so including it would change the
 // key (and silently drop checked state) every time servings are adjusted.
-function keyFromStep(
-	step: Step[number],
-	groupIndex: number,
-	stepIndex: number,
-) {
+function keyFromStep(step: FlatItem, groupIndex: number, stepIndex: number) {
 	return `${groupIndex}-${stepIndex}-${step.type}-${"name" in step ? step.name : ""}`;
 }
 
