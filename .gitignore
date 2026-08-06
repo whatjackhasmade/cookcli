@@ -78,3 +78,5 @@ yarn-error.log*
 next-env.d.ts
 
 public/recipes
+
+.idea
