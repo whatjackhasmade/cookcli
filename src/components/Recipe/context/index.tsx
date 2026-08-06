@@ -5,7 +5,7 @@ import { createContext, type ReactNode, useContext, useState } from "react";
 import { isValidNumber } from "@/utils";
 import type { Recipe } from "../types";
 
-function modifyIngredientQuantity(
+export function modifyIngredientQuantity(
 	ingredient: Recipe["ingredients"][number],
 	servingsMultiplier: number,
 ) {
