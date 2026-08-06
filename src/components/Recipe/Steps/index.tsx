@@ -17,7 +17,7 @@ import type { CSSProperties } from "react";
 
 const style: CSSProperties = {
 	// @ts-expect-error: Allow custom CSS variable
-	"--color": "#ffa238",
+	"--color": "var(--ingredient-color)",
 };
 
 export default function Steps() {
@@ -67,14 +67,14 @@ export default function Steps() {
 									>
 										<span
 											style={{
-												color: "#ffa238",
+												color: "var(--ingredient-color)",
 											}}
 										>
 											{step.name}
 										</span>
 										<span
 											style={{
-												color: "#fb8536",
+												color: "var(--ingredient-quantity-color)",
 												marginLeft: "3px",
 											}}
 										>
@@ -88,7 +88,7 @@ export default function Steps() {
 									<span
 										key={keyFromStep(step, groupIndex, stepIndex)}
 										style={{
-											color: "#38e4ff",
+											color: "var(--timer-color)",
 										}}
 									>
 										{step.quantity} {step.units}

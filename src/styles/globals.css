@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Recipe step accent colors, tuned per theme for contrast against the
+   HeroUI background/foreground tokens rather than fixed hex values. */
+:root {
+	--ingredient-color: #b45309;
+	--ingredient-quantity-color: #c2410c;
+	--timer-color: #0e7490;
+}
+
+.dark {
+	--ingredient-color: #ffa238;
+	--ingredient-quantity-color: #fb8536;
+	--timer-color: #38e4ff;
+}
+
 /* Strikethrough */
 @keyframes strikethrough {
 	from {

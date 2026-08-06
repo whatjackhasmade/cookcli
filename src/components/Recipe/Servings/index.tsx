@@ -24,10 +24,10 @@ export default function Servings() {
 					}}
 				>
 					<button
+						className="bg-default-200 text-default-foreground"
 						style={{
 							padding: "4px",
 							width: "20px",
-							backgroundColor: "#292828",
 						}}
 						type="button"
 						onClick={() =>
@@ -55,10 +55,10 @@ export default function Servings() {
 						}}
 					/>
 					<button
+						className="bg-default-200 text-default-foreground"
 						style={{
 							padding: "4px",
 							width: "20px",
-							backgroundColor: "#292828",
 						}}
 						type="button"
 						onClick={() => setServings((count) => count + 1)}
@@ -76,9 +76,7 @@ export default function Servings() {
 					</span>
 				</div>
 				<button
-					style={{
-						color: "#818181",
-					}}
+					className="text-default-500"
 					type="button"
 					onClick={() => setServings(defaultServings)}
 				>
