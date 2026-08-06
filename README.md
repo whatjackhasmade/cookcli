@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# cook-cli
 
-## Getting Started
+A personal cookbook built with Next.js. Recipes are stored as
+[Cooklang](https://cooklang.org/) `.cook` files with YAML frontmatter,
+directly in the repo under `src/recipes/<category>/` — there's no database
+or CMS.
 
-First, run the development server:
+## Getting started
+
+Requires the Node version pinned in `.nvmrc` (v22.13.0).
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Adding a recipe
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Add a `.cook` file to a category directory under `src/recipes/` (e.g.
+`src/recipes/baking/my-recipe.cook`), following Cooklang syntax with YAML
+frontmatter for metadata like `title` and `servings`. Drop a `.jpg` next to
+it with the same base name for the cover image. Recipes are picked up
+automatically — the homepage groups them by their containing directory name.
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+- `npm run dev` — copy recipe images, then start `next dev --turbopack`
+- `npm run build` — copy recipe images, then `next build`
+- `npm run start` — run the production server (after `build`)
+- `npm run images` — copy recipe images from `src/recipes/**/*.jpg` into
+  `public/recipes/` (`scripts/copyImages.ts`), run automatically before
+  `dev`/`build`
+- `npm run lint` — Biome lint (`--write`)
+- `npm run format` — Biome format (`--write`)
+- `npm run fix` — format, then lint
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Linting/formatting is [Biome](https://biomejs.dev/), not ESLint/Prettier.
+There is no test suite configured in this repo.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## More context for AI agents
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [AGENTS.md](./AGENTS.md) for the content pipeline, routing, and
+recipe-rendering architecture.
