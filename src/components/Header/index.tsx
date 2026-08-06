@@ -16,9 +16,7 @@ export function Header() {
 		<Navbar position="static">
 			<NavbarContent className="container mx-auto max-w-3xl pt-16 px-6 flex-grow">
 				{menuItems.map((item) => (
-					<NavbarItem
-						key={item.label}
-					>
+					<NavbarItem key={item.label}>
 						<Link
 							next={{
 								href: item.href,
