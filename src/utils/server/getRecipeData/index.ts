@@ -1,15 +1,17 @@
 import nodePath from "node:path";
 import {
-	Parser,
 	type Ingredient as CooklangIngredient,
 	type Item as CooklangItem,
 	type Quantity as CooklangQuantity,
-	type ScaledRecipeWithReport,
 	type Value as CooklangValue,
+	Parser,
+	type ScaledRecipeWithReport,
 } from "@cooklang/cooklang";
+import { cache } from "react";
 import { recipeManifest } from "../recipeManifest.generated";
 
 type CooklangRecipe = ScaledRecipeWithReport["recipe"];
+
 import matter from "gray-matter";
 
 export interface RecipeMetadata {
@@ -187,7 +189,10 @@ function toRecipeMetadata(
 	return { ...data, title: titleFromFilename(filePath) };
 }
 
-export async function getRecipeData(path: string) {
+// Cached per-request (React's server-component memoization) so the root
+// layout's site-wide search index and a page's own data fetch don't each
+// re-run the WASM parser for every recipe.
+export const getRecipeData = cache(async (path: string) => {
 	const cookFileContent = recipeManifest[path];
 	if (cookFileContent === undefined) {
 		throw new Error(`No recipe found for path "${path}"`);
@@ -213,4 +218,4 @@ export async function getRecipeData(path: string) {
 		slug: path.split("/").pop()?.split(".")[0],
 		steps,
 	};
-}
+});

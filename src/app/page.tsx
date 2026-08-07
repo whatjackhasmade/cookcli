@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Search } from "@/components/Search";
 import { getCookFiles, getRecipeData } from "@/utils/server";
 import styles from "./page.module.css";
 
@@ -24,16 +23,9 @@ async function getFormattedData() {
 
 export default async function Home() {
 	const categories = await getFormattedData();
-	const searchableRecipes = Object.values(categories)
-		.flat()
-		.map((recipe) => ({
-			title: recipe.metadata.title,
-			href: `/${recipe.slug}`,
-		}));
 
 	return (
 		<div className={styles.list}>
-			<Search recipes={searchableRecipes} />
 			{Object.entries(categories).map(([category, value]) => (
 				<section key={category}>
 					<h2 className={styles.categoryTitle}>
