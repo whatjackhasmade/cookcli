@@ -1,7 +1,6 @@
 import { uppercaseFirstLetter } from "@/utils";
-import { useRecipe } from "../context";
+import { ingredientCheckKey, useRecipe } from "../context";
 import styles from "./index.module.css";
-import { idFromIngredientName } from "./utils";
 
 export default function Ingredients() {
 	const { ingredients, checkedIngredients, setCheckedIngredients } =
@@ -44,8 +43,8 @@ export default function Ingredients() {
 					</tr>
 				</thead>
 				<tbody>
-					{filteredIngredients.map((ingredient, index) => {
-						const id = `${idFromIngredientName(ingredient.name, ingredient.quantity, ingredient.units)}-${index}`;
+					{filteredIngredients.map((ingredient) => {
+						const id = ingredientCheckKey(ingredient.index);
 						const checked = checkedIngredients.has(id);
 
 						return (

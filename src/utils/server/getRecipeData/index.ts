@@ -33,6 +33,10 @@ export interface FlatTextItem {
 
 export interface FlatIngredientItem {
 	type: "ingredient";
+	// Index into the recipe's top-level `ingredients` array - the stable
+	// identity that links a step's ingredient reference back to its row in
+	// the ingredients table, so the two can share checked state.
+	index: number;
 	name: string;
 	quantity: number | string;
 	units: string;
@@ -69,9 +73,10 @@ type CooklangFractionOrRegular =
 // den, err})`, which is NaN. Compute fractions ourselves instead.
 function toNumber(numValue: CooklangFractionOrRegular): number {
 	switch (numValue.type) {
-		case "fraction":
+		case "fraction": {
 			const { whole, num, den } = numValue.value;
 			return whole + num / den;
+		}
 		default:
 			return numValue.value;
 	}
@@ -112,9 +117,13 @@ function flattenQuantity(quantity: CooklangQuantity | null): {
 	return { quantity: flattenValue(quantity.value), units: quantity.unit ?? "" };
 }
 
-function toFlatIngredient(ingredient: CooklangIngredient): FlatIngredientItem {
+function toFlatIngredient(
+	ingredient: CooklangIngredient,
+	index: number,
+): FlatIngredientItem {
 	return {
 		type: "ingredient",
+		index,
 		name: ingredient.name,
 		...flattenQuantity(ingredient.quantity),
 	};
@@ -128,7 +137,7 @@ function resolveItem(item: CooklangItem, recipe: CooklangRecipe): FlatItem {
 		case "text":
 			return { type: "text", value: item.value };
 		case "ingredient":
-			return toFlatIngredient(recipe.ingredients[item.index]);
+			return toFlatIngredient(recipe.ingredients[item.index], item.index);
 		case "cookware":
 			return { type: "cookware", name: recipe.cookware[item.index].name };
 		case "timer":
@@ -198,7 +207,9 @@ export async function getRecipeData(path: string) {
 	return {
 		metadata,
 		path,
-		ingredients: recipe.ingredients.map(toFlatIngredient),
+		ingredients: recipe.ingredients.map((ingredient, index) =>
+			toFlatIngredient(ingredient, index),
+		),
 		slug: path.split("/").pop()?.split(".")[0],
 		steps,
 	};

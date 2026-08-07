@@ -1,5 +1,5 @@
 import type { FlatItem } from "@/utils/server";
-import { useRecipe } from "../context";
+import { ingredientCheckKey, useRecipe } from "../context";
 import styles from "./index.module.css";
 
 // Position-based, deliberately excludes step.quantity: that value is
@@ -33,9 +33,8 @@ export default function Steps() {
 										</span>
 									);
 								case "ingredient": {
-									const checked = checkedIngredients.has(
-										keyFromStep(step, groupIndex, stepIndex),
-									);
+									const checkKey = ingredientCheckKey(step.index);
+									const checked = checkedIngredients.has(checkKey);
 
 									return (
 										<button
@@ -44,14 +43,12 @@ export default function Steps() {
 											key={keyFromStep(step, groupIndex, stepIndex)}
 											type="button"
 											onClick={() => {
-												const newKey = keyFromStep(step, groupIndex, stepIndex);
-
 												setCheckedIngredients((prev) => {
 													const newSet = new Set(prev);
-													if (newSet.has(newKey)) {
-														newSet.delete(newKey);
+													if (newSet.has(checkKey)) {
+														newSet.delete(checkKey);
 													} else {
-														newSet.add(newKey);
+														newSet.add(checkKey);
 													}
 													return newSet;
 												});

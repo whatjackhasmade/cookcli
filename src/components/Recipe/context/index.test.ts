@@ -7,6 +7,7 @@ function ingredient(
 ): FlatIngredientItem {
 	return {
 		type: "ingredient",
+		index: 0,
 		name: "flour",
 		quantity: 100,
 		units: "g",

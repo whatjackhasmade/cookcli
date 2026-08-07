@@ -1,0 +1,75 @@
+.overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 50;
+	display: flex;
+	justify-content: center;
+	padding: 4rem 1.5rem;
+	background: color-mix(in srgb, var(--background) 70%, transparent);
+	backdrop-filter: blur(4px);
+}
+
+.modal {
+	width: 100%;
+	max-width: 32rem;
+	height: fit-content;
+	background: var(--surface);
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-md);
+	overflow: hidden;
+}
+
+.inputRow {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 1rem 1.25rem;
+}
+
+.icon {
+	flex-shrink: 0;
+	color: var(--color-muted-foreground);
+	font-size: 1.1rem;
+}
+
+.input {
+	flex: 1;
+	background: transparent;
+	border: none;
+	color: var(--foreground);
+	font-size: 1rem;
+}
+
+.input:focus-visible {
+	outline: none;
+}
+
+.results {
+	list-style: none;
+	max-height: 20rem;
+	overflow-y: auto;
+	border-top: 1px solid var(--border-color);
+}
+
+.resultLink {
+	display: block;
+	padding: 0.75rem 1.25rem;
+	font-size: 0.95rem;
+	transition: background-color 0.15s ease;
+}
+
+.resultLink:hover {
+	background: var(--surface-hover);
+}
+
+.resultLink:focus-visible {
+	outline: none;
+	background: var(--surface-hover);
+}
+
+.empty {
+	padding: 0.75rem 1.25rem;
+	font-size: 0.9rem;
+	color: var(--color-muted-foreground);
+}

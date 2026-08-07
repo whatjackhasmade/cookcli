@@ -4,6 +4,13 @@ import { createContext, type ReactNode, useContext, useState } from "react";
 import { isValidNumber } from "@/utils";
 import type { Recipe } from "../types";
 
+// Shared identity for an ingredient occurrence, used as the key in
+// checkedIngredients - both the Ingredients table and Steps resolve back to
+// the same index into recipe.ingredients, so checking one checks the other.
+export function ingredientCheckKey(index: number) {
+	return `ingredient-${index}`;
+}
+
 export function modifyIngredientQuantity(
 	ingredient: Recipe["ingredients"][number],
 	servingsMultiplier: number,
