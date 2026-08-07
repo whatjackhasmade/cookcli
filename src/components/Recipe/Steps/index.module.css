@@ -38,25 +38,75 @@
 .ingredient {
 	display: inline-flex;
 	align-items: baseline;
-	gap: 0.2rem;
-	padding: 0.05rem 0.4rem;
-	border-radius: var(--radius-sm);
+	gap: 0.25rem;
+	padding: 0.15rem 0.5rem;
+	border: 1px solid color-mix(in srgb, var(--ingredient-color) 30%, transparent);
+	border-radius: var(--radius-md);
 	background: color-mix(in srgb, var(--ingredient-color) 12%, transparent);
 	font-weight: 500;
-	transition: opacity 0.15s ease;
+	cursor: pointer;
+	transition:
+		background-color 0.15s ease,
+		border-color 0.15s ease,
+		transform 0.1s ease;
 }
 
 .ingredient:hover {
-	opacity: 0.8;
+	background: color-mix(in srgb, var(--ingredient-color) 20%, transparent);
+}
+
+.ingredient:active {
+	transform: scale(0.96);
 }
 
 .ingredientName {
+	position: relative;
 	color: var(--ingredient-color);
+	transition: color 0.3s ease;
 }
 
 .ingredientQuantity {
+	position: relative;
 	color: var(--ingredient-quantity-color);
 	font-size: 0.9em;
+	transition: color 0.3s ease;
+}
+
+.checked {
+	border-color: var(--border-color);
+	background: var(--surface);
+}
+
+.checked:hover {
+	background: var(--surface-hover);
+}
+
+.checked .ingredientName,
+.checked .ingredientQuantity {
+	color: var(--color-muted-foreground);
+}
+
+.checked .ingredientName::after,
+.checked .ingredientQuantity::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	height: 1.5px;
+	background: currentColor;
+	transform: translateY(-50%) scaleX(1);
+	transform-origin: left center;
+	animation: strikethrough 0.35s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+@keyframes strikethrough {
+	from {
+		transform: translateY(-50%) scaleX(0);
+	}
+	to {
+		transform: translateY(-50%) scaleX(1);
+	}
 }
 
 .timer {
