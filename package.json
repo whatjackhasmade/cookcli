@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"build": "npm run images && next build",
+		"build": "npm run images && next build && npx tsx scripts/pruneServerTrace.ts",
 		"dev": "npm run images && next dev --turbopack",
 		"fix": "npm run format && npm run lint",
 		"format": "npx @biomejs/biome format --write",
