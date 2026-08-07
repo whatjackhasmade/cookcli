@@ -10,22 +10,22 @@
 		"images": "npx tsx scripts/copyImages.ts",
 		"lint": "npx @biomejs/biome lint --write",
 		"postinstall": "npx tsx scripts/patchCooklangWasm.ts",
-		"recipes": "npx tsx scripts/generateRecipeManifest.ts",
+		"recipes": "npx tsx scripts/generateRecipeData.ts",
 		"start": "next start",
 		"test": "vitest run"
 	},
 	"dependencies": {
-		"@cooklang/cooklang": "0.18.7",
-		"gray-matter": "4.0.3",
 		"next": "16.3.0",
 		"react": "19.2.8",
 		"react-dom": "19.2.8"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.7",
+		"@cooklang/cooklang": "0.18.7",
 		"@types/node": "26.1.2",
 		"@types/react": "19.2.18",
 		"@types/react-dom": "19.2.4",
+		"gray-matter": "4.0.3",
 		"tsx": "4.23.10",
 		"typescript": "7.0.2",
 		"vitest": "4.1.10"

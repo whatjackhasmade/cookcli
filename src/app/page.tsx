@@ -1,24 +1,19 @@
 import Link from "next/link";
-import { getCookFiles, getRecipeData } from "@/utils/server";
+import type { RecipeSummary } from "@/utils/server";
+import { getRecipeSummaries } from "@/utils/server";
 import styles from "./page.module.css";
 
 async function getFormattedData() {
-	const cookFiles = await getCookFiles();
-	const cookFilesWithData = await Promise.all(cookFiles.map(getRecipeData));
+	const summaries = await getRecipeSummaries();
 
-	// Group files by category (it's the second part of the path)
-	const categories = cookFilesWithData.reduce(
-		(acc, file) => {
-			const pathParts = file.path.split("/");
-			const category = pathParts[pathParts.length - 2];
-			acc[category] = acc[category] || [];
-			acc[category].push(file);
+	return summaries.reduce(
+		(acc, recipe) => {
+			acc[recipe.category] = acc[recipe.category] || [];
+			acc[recipe.category].push(recipe);
 			return acc;
 		},
-		{} as Record<string, Awaited<ReturnType<typeof getRecipeData>>[]>,
+		{} as Record<string, RecipeSummary[]>,
 	);
-
-	return categories;
 }
 
 export default async function Home() {
@@ -35,11 +30,8 @@ export default async function Home() {
 					<ul className={styles.recipeList}>
 						{value.map((recipe) => (
 							<li className={styles.recipeItem} key={recipe.path}>
-								<Link
-									className={styles.recipeLink}
-									href={`/${recipe.path.split("/").pop()?.split(".")[0]}`}
-								>
-									{recipe.metadata.title}
+								<Link className={styles.recipeLink} href={`/${recipe.slug}`}>
+									{recipe.title}
 								</Link>
 							</li>
 						))}

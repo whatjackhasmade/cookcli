@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { RecipeWithContext } from "@/components/Recipe/Parent";
-import { getCookFiles, getRecipeData } from "@/utils/server";
+import { getRecipeData, getRecipeSummaries } from "@/utils/server";
 
 export default async function Page({
 	params,
@@ -8,14 +8,14 @@ export default async function Page({
 	params: Promise<{ slug: string }>;
 }) {
 	const slug = (await params).slug;
-	const cookFiles = await getCookFiles();
-	const cookFile = cookFiles.find((file) => file.endsWith(`${slug}.cook`));
+	const summaries = await getRecipeSummaries();
+	const summary = summaries.find((recipe) => recipe.slug === slug);
 
-	if (!cookFile) {
+	if (!summary) {
 		notFound();
 	}
 
-	const data = await getRecipeData(cookFile);
+	const data = await getRecipeData(summary.path);
 
 	return <RecipeWithContext recipe={data} />;
 }

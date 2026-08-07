@@ -1,0 +1,172 @@
+import nodePath from "node:path";
+import {
+	type Ingredient as CooklangIngredient,
+	type Item as CooklangItem,
+	type Quantity as CooklangQuantity,
+	type Value as CooklangValue,
+	Parser,
+	type ScaledRecipeWithReport,
+} from "@cooklang/cooklang";
+import matter from "gray-matter";
+import type {
+	FlatIngredientItem,
+	FlatItem,
+	RecipeData,
+	RecipeMetadata,
+} from "../src/utils/server/getRecipeData/types";
+
+type CooklangRecipe = ScaledRecipeWithReport["recipe"];
+
+// @cooklang/cooklang's own `Value`/`Number` type declarations are broken -
+// the "Number" they reference resolves to TS's built-in boxed-number
+// interface, not the WASM parser's actual `{ type: "regular" | "fraction",
+// value }` shape - so we cast to this local type to work with the real
+// runtime shape.
+type CooklangFractionOrRegular =
+	| { type: "regular"; value: number }
+	| { type: "fraction"; value: { whole: number; num: number; den: number } };
+
+// getNumericValue() only unwraps the "regular" sub-type; for "fraction"
+// (a recipe writing a quantity like `1/2`) it does `Number({whole, num,
+// den, err})`, which is NaN. Compute fractions ourselves instead.
+function toNumber(numValue: CooklangFractionOrRegular): number {
+	switch (numValue.type) {
+		case "fraction": {
+			const { whole, num, den } = numValue.value;
+			return whole + num / den;
+		}
+		default:
+			return numValue.value;
+	}
+}
+
+// The recipe author omits Cooklang's `%unit` separator (e.g. `{575g}` not
+// `{575%g}`), so the parser can't split quantity from unit - it hands back
+// the whole thing as opaque text. Preserved as-is (a single string) rather
+// than parsed apart, matching the old parser's behavior exactly.
+function flattenValue(value: CooklangValue): number | string {
+	switch (value.type) {
+		case "text":
+			return value.value;
+		case "range": {
+			const start = toNumber(
+				value.value.start as unknown as CooklangFractionOrRegular,
+			);
+			const end = toNumber(
+				value.value.end as unknown as CooklangFractionOrRegular,
+			);
+			return `${start}-${end}`;
+		}
+		case "number":
+			return toNumber(value.value as unknown as CooklangFractionOrRegular);
+	}
+}
+
+// No quantity (e.g. "a pinch of salt") is flattened to the sentinel string
+// "some", matching the old parser - callers (Ingredients' filter) rely on it.
+function flattenQuantity(quantity: CooklangQuantity | null): {
+	quantity: number | string;
+	units: string;
+} {
+	if (!quantity) {
+		return { quantity: "some", units: "" };
+	}
+
+	return { quantity: flattenValue(quantity.value), units: quantity.unit ?? "" };
+}
+
+function toFlatIngredient(
+	ingredient: CooklangIngredient,
+	index: number,
+): FlatIngredientItem {
+	return {
+		type: "ingredient",
+		index,
+		name: ingredient.name,
+		...flattenQuantity(ingredient.quantity),
+	};
+}
+
+// Ingredient/cookware/timer items only carry an index into the recipe's
+// top-level ingredients/cookware/timers arrays - resolve it back to a flat,
+// self-contained item so Steps doesn't need to know about the indirection.
+function resolveItem(item: CooklangItem, recipe: CooklangRecipe): FlatItem {
+	switch (item.type) {
+		case "text":
+			return { type: "text", value: item.value };
+		case "ingredient":
+			return toFlatIngredient(recipe.ingredients[item.index], item.index);
+		case "cookware":
+			return { type: "cookware", name: recipe.cookware[item.index].name };
+		case "timer":
+			return {
+				type: "timer",
+				...flattenQuantity(recipe.timers[item.index].quantity),
+			};
+		case "inlineQuantity": {
+			// Bare measurements in prose (e.g. "23cm"), not tied to an
+			// ingredient/timer - the old parser left these as plain text,
+			// so re-render them as text rather than as a scalable amount.
+			const { quantity, units } = flattenQuantity(
+				recipe.inline_quantities[item.index],
+			);
+			return { type: "text", value: `${quantity}${units}` };
+		}
+	}
+}
+
+function titleFromFilename(filePath: string) {
+	return nodePath
+		.basename(filePath, nodePath.extname(filePath))
+		.split("-")
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(" ");
+}
+
+// Recipe frontmatter is hand-written YAML with no schema, so a recipe can be
+// missing a title (or have a typo'd key). Fall back to a derived title
+// instead of shipping "undefined" as a heading, and warn so it gets noticed.
+function toRecipeMetadata(
+	data: Record<string, unknown>,
+	filePath: string,
+): RecipeMetadata {
+	if (typeof data.title === "string" && data.title.trim() !== "") {
+		return data as RecipeMetadata;
+	}
+
+	console.warn(
+		`Recipe at ${filePath} is missing a "title" in its frontmatter; falling back to a title derived from the filename.`,
+	);
+
+	return { ...data, title: titleFromFilename(filePath) };
+}
+
+// Reused across every parseRecipe call - the WASM module only needs to be
+// instantiated once, not once per recipe file.
+const parser = new Parser();
+
+export function parseRecipe(
+	relativePath: string,
+	cookFileContent: string,
+): RecipeData {
+	const { data, content } = matter(cookFileContent);
+	const metadata = toRecipeMetadata(data, relativePath);
+	const { recipe } = parser.parse(content);
+
+	const steps = recipe.sections
+		.flatMap((section) => section.content)
+		.filter((item) => item.type === "step")
+		.map((item) =>
+			item.value.items.map((stepItem) => resolveItem(stepItem, recipe)),
+		);
+
+	return {
+		metadata,
+		path: relativePath,
+		ingredients: recipe.ingredients.map((ingredient, index) =>
+			toFlatIngredient(ingredient, index),
+		),
+		slug: relativePath.split("/").pop()?.split(".")[0],
+		steps,
+	};
+}

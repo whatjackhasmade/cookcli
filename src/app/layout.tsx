@@ -3,15 +3,14 @@ import type { Metadata, Viewport } from "next";
 import { Header } from "@/components/Header";
 import { Search } from "@/components/Search";
 import { fontSans } from "@/config/fonts";
-import { getCookFiles, getRecipeData } from "@/utils/server";
+import { getRecipeSummaries } from "@/utils/server";
 import styles from "./layout.module.css";
 
 async function getSearchableRecipes() {
-	const cookFiles = await getCookFiles();
-	const recipes = await Promise.all(cookFiles.map(getRecipeData));
+	const summaries = await getRecipeSummaries();
 
-	return recipes.map((recipe) => ({
-		title: recipe.metadata.title,
+	return summaries.map((recipe) => ({
+		title: recipe.title,
 		href: `/${recipe.slug}`,
 	}));
 }
