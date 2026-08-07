@@ -1,6 +1,5 @@
 "use client";
 
-import type { Selection } from "@react-types/shared";
 import { createContext, type ReactNode, useContext, useState } from "react";
 import { isValidNumber } from "@/utils";
 import type { Recipe } from "../types";
@@ -31,11 +30,11 @@ export function modifyIngredientQuantity(
 }
 
 interface RecipeState {
-	checkedIngredients: Selection;
+	checkedIngredients: Set<string>;
 	ingredients: Recipe["ingredients"];
 	recipe: Recipe;
 	servings: number;
-	setCheckedIngredients: React.Dispatch<React.SetStateAction<Selection>>;
+	setCheckedIngredients: React.Dispatch<React.SetStateAction<Set<string>>>;
 	setServings: React.Dispatch<React.SetStateAction<number>>;
 	steps: Recipe["steps"];
 }
@@ -58,7 +57,7 @@ export function RecipeProvider({ children, recipe }: RecipeProviderProps) {
 		isValidNumber(recipe.metadata.servings) ? recipe.metadata.servings : 1,
 	);
 
-	const [checkedIngredients, setCheckedIngredients] = useState<Selection>(
+	const [checkedIngredients, setCheckedIngredients] = useState<Set<string>>(
 		new Set(),
 	);
 

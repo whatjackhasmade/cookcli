@@ -1,11 +1,3 @@
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableColumn,
-	TableHeader,
-	TableRow,
-} from "@heroui/table";
 import { useRecipe } from "../context";
 
 function uppercaseFirstLetter(str: string) {
@@ -24,28 +16,51 @@ export default function Ingredients() {
 		(ingredient) => ingredient.quantity !== "some",
 	);
 
+	function toggleIngredient(name: string) {
+		setCheckedIngredients((prev) => {
+			const newSet = new Set(prev);
+			if (newSet.has(name)) {
+				newSet.delete(name);
+			} else {
+				newSet.add(name);
+			}
+			return newSet;
+		});
+	}
+
+	if (filteredIngredients.length === 0) {
+		return <p className="mb-5">No ingredients in this recipe.</p>;
+	}
+
 	return (
-		<Table
-			aria-label="Ingredients list"
-			className="mb-5"
-			selectionMode="multiple"
-			selectedKeys={checkedIngredients}
-			onSelectionChange={setCheckedIngredients}
-		>
-			<TableHeader>
-				<TableColumn>Ingredient</TableColumn>
-				<TableColumn>Quantity</TableColumn>
-			</TableHeader>
-			<TableBody emptyContent={"No ingredients in this recipe."}>
+		<table aria-label="Ingredients list" className="mb-5">
+			<thead>
+				<tr>
+					<th>
+						<span className="sr-only">Checked</span>
+					</th>
+					<th>Ingredient</th>
+					<th>Quantity</th>
+				</tr>
+			</thead>
+			<tbody>
 				{filteredIngredients.map((ingredient) => (
-					<TableRow key={JSON.stringify(ingredient)}>
-						<TableCell>{uppercaseFirstLetter(ingredient.name)}</TableCell>
-						<TableCell>
+					<tr key={ingredient.name}>
+						<td>
+							<input
+								type="checkbox"
+								checked={checkedIngredients.has(ingredient.name)}
+								onChange={() => toggleIngredient(ingredient.name)}
+								aria-label={`Check off ${ingredient.name}`}
+							/>
+						</td>
+						<td>{uppercaseFirstLetter(ingredient.name)}</td>
+						<td>
 							{ingredient.quantity} {ingredient.units}
-						</TableCell>
-					</TableRow>
+						</td>
+					</tr>
 				))}
-			</TableBody>
-		</Table>
+			</tbody>
+		</table>
 	);
 }

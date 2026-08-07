@@ -8,7 +8,6 @@ function keyFromStep(step: FlatItem, groupIndex: number, stepIndex: number) {
 	return `${groupIndex}-${stepIndex}-${step.type}-${"name" in step ? step.name : ""}`;
 }
 
-import type { Key } from "@react-types/shared";
 import type { CSSProperties } from "react";
 
 const style: CSSProperties = {
@@ -36,7 +35,6 @@ export default function Steps() {
 									<button
 										style={style}
 										className={
-											checkedIngredients === "all" ||
 											checkedIngredients.has(
 												keyFromStep(step, groupIndex, stepIndex),
 											)
@@ -49,15 +47,13 @@ export default function Steps() {
 											const newKey = keyFromStep(step, groupIndex, stepIndex);
 
 											setCheckedIngredients((prev) => {
-												if (prev === "all") {
-													return new Set<Key>([newKey]);
-												} else if (prev.has(newKey)) {
-													const newSet = new Set(prev);
+												const newSet = new Set(prev);
+												if (newSet.has(newKey)) {
 													newSet.delete(newKey);
-													return newSet;
 												} else {
-													return new Set<Key>([...Array.from(prev), newKey]);
+													newSet.add(newKey);
 												}
+												return newSet;
 											});
 										}}
 									>
