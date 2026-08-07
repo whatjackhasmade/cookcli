@@ -12,6 +12,7 @@ export default function Cover() {
 	return (
 		<div className={styles.wrapper}>
 			<Image
+				priority
 				className={styles.image}
 				src={`/recipes/${recipe.slug}.jpg`}
 				alt={recipe.metadata.title}
