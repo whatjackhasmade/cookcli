@@ -51,8 +51,8 @@ unused by any script.
   `Recipe` (index) renders `Cover`, `Servings`, `Ingredients`, `Steps`, all of
   which read from `RecipeContext` via `useRecipe()`.
 - `RecipeContext` is the real state hub: it holds `servings` and
-  `checkedIngredients` (a react-aria `Selection`), and derives a
-  `servingsMultiplier` from `recipe.metadata.servings` vs. the current
+  `checkedIngredients` (a plain `Set<string>` of ingredient/step keys), and
+  derives a `servingsMultiplier` from `recipe.metadata.servings` vs. the current
   `servings` count. `modifyIngredientQuantity` applies that multiplier to
   both the flat `ingredients` list and to inline ingredient references
   inside `steps` — so quantity scaling logic lives in exactly one place and
@@ -64,8 +64,13 @@ unused by any script.
 of them into `public/recipes/` before dev/build. `public/recipes` is
 generated and gitignored — don't edit or commit into it directly.
 
-**Styling/UI**: Tailwind CSS + HeroUI (`@heroui/*`) components, theme
-switching via `next-themes`, wired up in `src/components/Providers`.
+**Styling/UI**: Plain CSS — one `.module.css` file co-located per component,
+plus `src/styles/globals.css` for the reset and CSS-custom-property design
+tokens (`--background`, `--foreground`, `--color-button-background`, etc.).
+No component library, no Tailwind. The app has a single, hardcoded dark
+theme with no toggle (`<html>` carries no theme class at all — the tokens
+in `globals.css` just *are* the dark palette), so there's no
+provider/context to wire up for it.
 
 ## Project conventions
 
