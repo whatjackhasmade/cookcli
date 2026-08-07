@@ -44,6 +44,10 @@ next-env.d.ts
 # generated recipe images (copied from src/recipes at build time)
 public/recipes
 
+# minified recipe cover images + cache (regenerated from source .jpg files at build time)
+src/recipes/**/*.minified.jpg
+scripts/.recipe-image-cache.json
+
 # generated recipe data (parsed from src/recipes at build time)
 src/utils/server/generated/
 src/utils/server/recipeDataLoaders.generated.ts

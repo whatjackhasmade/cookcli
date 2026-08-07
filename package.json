@@ -9,7 +9,7 @@
 		"dev:recipes": "npx tsx watch --clear-screen=false --include \"src/recipes/**/*.cook\" scripts/generateRecipeData.ts",
 		"fix": "npm run format && npm run lint",
 		"format": "npx @biomejs/biome format --write",
-		"images": "npx tsx scripts/copyImages.ts",
+		"images": "npx tsx scripts/optimizeRecipeImages.ts && npx tsx scripts/copyImages.ts",
 		"lint": "npx @biomejs/biome lint --write",
 		"postinstall": "npx tsx scripts/patchCooklangWasm.ts",
 		"recipes": "npx tsx scripts/generateRecipeData.ts",
@@ -29,6 +29,7 @@
 		"@types/react-dom": "19.2.4",
 		"concurrently": "10.0.4",
 		"gray-matter": "4.0.3",
+		"sharp": "0.35.3",
 		"tsx": "4.23.10",
 		"typescript": "7.0.2",
 		"vitest": "4.1.10"

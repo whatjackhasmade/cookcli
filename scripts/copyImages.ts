@@ -22,7 +22,9 @@ import path from "node:path";
 
 			const files = await fs.promises.readdir(recipePath);
 			return files
-				.filter((file) => file.endsWith(".jpg"))
+				.filter(
+					(file) => file.endsWith(".jpg") && !file.endsWith(".minified.jpg"),
+				)
 				.map((file) => path.join(recipeDirectory, file));
 		}),
 	).then((images) => images.flat());
@@ -34,6 +36,8 @@ import path from "node:path";
 			const filepath = `/recipes/${filename}`;
 
 			const imagePath = path.join(process.cwd(), "src/recipes", image);
+			const minifiedPath = imagePath.replace(/\.jpg$/, ".minified.jpg");
+			const sourcePath = fs.existsSync(minifiedPath) ? minifiedPath : imagePath;
 			const publicPath = path.join(process.cwd(), "public", filepath);
 
 			// Create the directory if it doesn't exist
@@ -42,7 +46,7 @@ import path from "node:path";
 				await fs.promises.mkdir(publicDirectory, { recursive: true });
 			}
 
-			await fs.promises.copyFile(imagePath, publicPath);
+			await fs.promises.copyFile(sourcePath, publicPath);
 		}
 	}
 })();
