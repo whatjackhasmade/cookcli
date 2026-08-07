@@ -1,4 +1,5 @@
 import { Link } from "@/components/Link";
+import styles from "./index.module.css";
 
 const menuItems = [
 	{
@@ -10,7 +11,7 @@ const menuItems = [
 export function Header() {
 	return (
 		<nav>
-			<ul className="container mx-auto max-w-3xl pt-16 px-6 flex-grow">
+			<ul className={styles.list}>
 				{menuItems.map((item) => (
 					<li key={item.label}>
 						<Link
