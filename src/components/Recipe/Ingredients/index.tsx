@@ -1,9 +1,7 @@
+import { uppercaseFirstLetter } from "@/utils";
 import { useRecipe } from "../context";
 import styles from "./index.module.css";
-
-function uppercaseFirstLetter(str: string) {
-	return str[0].toUpperCase() + str.slice(1);
-}
+import { idFromIngredientName } from "./utils";
 
 export default function Ingredients() {
 	const { ingredients, checkedIngredients, setCheckedIngredients } =
@@ -45,22 +43,39 @@ export default function Ingredients() {
 				</tr>
 			</thead>
 			<tbody>
-				{filteredIngredients.map((ingredient) => (
-					<tr key={ingredient.name}>
-						<td>
-							<input
-								type="checkbox"
-								checked={checkedIngredients.has(ingredient.name)}
-								onChange={() => toggleIngredient(ingredient.name)}
-								aria-label={`Check off ${ingredient.name}`}
-							/>
-						</td>
-						<td>{uppercaseFirstLetter(ingredient.name)}</td>
-						<td>
-							{ingredient.quantity} {ingredient.units}
-						</td>
-					</tr>
-				))}
+				{filteredIngredients.map((ingredient, index) => {
+					const id = `${idFromIngredientName(ingredient.name, ingredient.quantity, ingredient.units)}-${index}`;
+					const checked = checkedIngredients.has(id);
+
+					return (
+						<tr
+							key={id}
+							className={checked ? styles.checkedRow : undefined}
+						>
+							<td className={styles.checkboxCell}>
+								<label htmlFor={id} className={styles.cellLabel}>
+									<input
+										id={id}
+										type="checkbox"
+										checked={checked}
+										onChange={() => toggleIngredient(id)}
+										aria-label={`Check off ${ingredient.name}`}
+									/>
+								</label>
+							</td>
+							<td>
+								<label htmlFor={id} className={styles.cellLabel}>
+									{uppercaseFirstLetter(ingredient.name)}
+								</label>
+							</td>
+							<td>
+								<label htmlFor={id} className={styles.cellLabel}>
+									{ingredient.quantity} {ingredient.units}
+								</label>
+							</td>
+						</tr>
+					);
+				})}
 			</tbody>
 		</table>
 	);
