@@ -2,6 +2,12 @@ import { notFound } from "next/navigation";
 import { RecipeWithContext } from "@/components/Recipe/Parent";
 import { getRecipeData, getRecipeSummaries } from "@/utils/server";
 
+export async function generateStaticParams() {
+	const summaries = await getRecipeSummaries();
+
+	return summaries.map((recipe) => ({ slug: recipe.slug }));
+}
+
 export default async function Page({
 	params,
 }: {
