@@ -1,5 +1,6 @@
 import { isValidNumber } from "@/utils";
 import { useRecipe } from "../context";
+import styles from "./index.module.css";
 
 export default function Servings() {
 	const { recipe, servings, setServings } = useRecipe();
@@ -24,7 +25,7 @@ export default function Servings() {
 					}}
 				>
 					<button
-						className="bg-default-200 text-default-foreground"
+						className={styles.stepperButton}
 						style={{
 							padding: "4px",
 							width: "20px",
@@ -55,7 +56,7 @@ export default function Servings() {
 						}}
 					/>
 					<button
-						className="bg-default-200 text-default-foreground"
+						className={styles.stepperButton}
 						style={{
 							padding: "4px",
 							width: "20px",
@@ -76,7 +77,7 @@ export default function Servings() {
 					</span>
 				</div>
 				<button
-					className="text-default-500"
+					className={styles.resetButton}
 					type="button"
 					onClick={() => setServings(defaultServings)}
 				>

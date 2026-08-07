@@ -1,5 +1,6 @@
 import type { FlatItem } from "@/utils/server";
 import { useRecipe } from "../context";
+import styles from "./index.module.css";
 
 // Position-based, deliberately excludes step.quantity: that value is
 // recalculated per serving-size change, so including it would change the
@@ -19,7 +20,7 @@ export default function Steps() {
 	const { steps, checkedIngredients, setCheckedIngredients } = useRecipe();
 
 	return (
-		<ol className="flex gap-4 flex-col mb-2 list-decimal">
+		<ol className={styles.list}>
 			{steps.map((stepGroup, groupIndex) => (
 				<li key={groupIndex}>
 					{stepGroup.map((step, stepIndex) => {

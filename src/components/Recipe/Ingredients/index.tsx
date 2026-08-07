@@ -1,4 +1,5 @@
 import { useRecipe } from "../context";
+import styles from "./index.module.css";
 
 function uppercaseFirstLetter(str: string) {
 	return str[0].toUpperCase() + str.slice(1);
@@ -29,11 +30,11 @@ export default function Ingredients() {
 	}
 
 	if (filteredIngredients.length === 0) {
-		return <p className="mb-5">No ingredients in this recipe.</p>;
+		return <p className={styles.empty}>No ingredients in this recipe.</p>;
 	}
 
 	return (
-		<table aria-label="Ingredients list" className="mb-5">
+		<table aria-label="Ingredients list" className={styles.table}>
 			<thead>
 				<tr>
 					<th>
