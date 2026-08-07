@@ -1,0 +1,8 @@
+.stepperButton {
+	background: var(--color-button-background);
+	color: var(--color-button-foreground);
+}
+
+.resetButton {
+	color: var(--color-muted-foreground);
+}

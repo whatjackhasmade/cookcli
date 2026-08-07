@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getCookFiles, getRecipeData } from "@/utils/server";
+import styles from "./page.module.css";
 
 async function getFormattedData() {
 	const cookFiles = await getCookFiles();
@@ -24,10 +25,10 @@ export default async function Home() {
 	const categories = await getFormattedData();
 
 	return (
-		<div className="flex gap-4 flex-col mb-2">
+		<div className={styles.list}>
 			{Object.entries(categories).map(([category, value]) => (
 				<section key={category}>
-					<h2 className="text-xl mb-2 mt-2">
+					<h2 className={styles.categoryTitle}>
 						{/* Uppercase first letter */}
 						{category.charAt(0).toUpperCase() + category.slice(1)}
 					</h2>

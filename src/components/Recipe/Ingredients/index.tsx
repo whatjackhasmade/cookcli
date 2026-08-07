@@ -1,16 +1,7 @@
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableColumn,
-	TableHeader,
-	TableRow,
-} from "@heroui/table";
+import { uppercaseFirstLetter } from "@/utils";
 import { useRecipe } from "../context";
-
-function uppercaseFirstLetter(str: string) {
-	return str[0].toUpperCase() + str.slice(1);
-}
+import styles from "./index.module.css";
+import { idFromIngredientName } from "./utils";
 
 export default function Ingredients() {
 	const { ingredients, checkedIngredients, setCheckedIngredients } =
@@ -24,28 +15,68 @@ export default function Ingredients() {
 		(ingredient) => ingredient.quantity !== "some",
 	);
 
+	function toggleIngredient(name: string) {
+		setCheckedIngredients((prev) => {
+			const newSet = new Set(prev);
+			if (newSet.has(name)) {
+				newSet.delete(name);
+			} else {
+				newSet.add(name);
+			}
+			return newSet;
+		});
+	}
+
+	if (filteredIngredients.length === 0) {
+		return <p className={styles.empty}>No ingredients in this recipe.</p>;
+	}
+
 	return (
-		<Table
-			aria-label="Ingredients list"
-			className="mb-5"
-			selectionMode="multiple"
-			selectedKeys={checkedIngredients}
-			onSelectionChange={setCheckedIngredients}
-		>
-			<TableHeader>
-				<TableColumn>Ingredient</TableColumn>
-				<TableColumn>Quantity</TableColumn>
-			</TableHeader>
-			<TableBody emptyContent={"No ingredients in this recipe."}>
-				{filteredIngredients.map((ingredient) => (
-					<TableRow key={JSON.stringify(ingredient)}>
-						<TableCell>{uppercaseFirstLetter(ingredient.name)}</TableCell>
-						<TableCell>
-							{ingredient.quantity} {ingredient.units}
-						</TableCell>
-					</TableRow>
-				))}
-			</TableBody>
-		</Table>
+		<table aria-label="Ingredients list" className={styles.table}>
+			<thead>
+				<tr>
+					<th>
+						<span className="sr-only">Checked</span>
+					</th>
+					<th>Ingredient</th>
+					<th>Quantity</th>
+				</tr>
+			</thead>
+			<tbody>
+				{filteredIngredients.map((ingredient, index) => {
+					const id = `${idFromIngredientName(ingredient.name, ingredient.quantity, ingredient.units)}-${index}`;
+					const checked = checkedIngredients.has(id);
+
+					return (
+						<tr
+							key={id}
+							className={checked ? styles.checkedRow : undefined}
+						>
+							<td className={styles.checkboxCell}>
+								<label htmlFor={id} className={styles.cellLabel}>
+									<input
+										id={id}
+										type="checkbox"
+										checked={checked}
+										onChange={() => toggleIngredient(id)}
+										aria-label={`Check off ${ingredient.name}`}
+									/>
+								</label>
+							</td>
+							<td>
+								<label htmlFor={id} className={styles.cellLabel}>
+									{uppercaseFirstLetter(ingredient.name)}
+								</label>
+							</td>
+							<td>
+								<label htmlFor={id} className={styles.cellLabel}>
+									{ingredient.quantity} {ingredient.units}
+								</label>
+							</td>
+						</tr>
+					);
+				})}
+			</tbody>
+		</table>
 	);
 }

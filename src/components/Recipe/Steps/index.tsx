@@ -1,18 +1,14 @@
-import type { Step } from "@cooklang/cooklang-ts";
+import type { FlatItem } from "@/utils/server";
 import { useRecipe } from "../context";
+import styles from "./index.module.css";
 
 // Position-based, deliberately excludes step.quantity: that value is
 // recalculated per serving-size change, so including it would change the
 // key (and silently drop checked state) every time servings are adjusted.
-function keyFromStep(
-	step: Step[number],
-	groupIndex: number,
-	stepIndex: number,
-) {
+function keyFromStep(step: FlatItem, groupIndex: number, stepIndex: number) {
 	return `${groupIndex}-${stepIndex}-${step.type}-${"name" in step ? step.name : ""}`;
 }
 
-import type { Key } from "@react-types/shared";
 import type { CSSProperties } from "react";
 
 const style: CSSProperties = {
@@ -24,7 +20,7 @@ export default function Steps() {
 	const { steps, checkedIngredients, setCheckedIngredients } = useRecipe();
 
 	return (
-		<ol className="flex gap-4 flex-col mb-2 list-decimal">
+		<ol className={styles.list}>
 			{steps.map((stepGroup, groupIndex) => (
 				<li key={groupIndex}>
 					{stepGroup.map((step, stepIndex) => {
@@ -40,7 +36,6 @@ export default function Steps() {
 									<button
 										style={style}
 										className={
-											checkedIngredients === "all" ||
 											checkedIngredients.has(
 												keyFromStep(step, groupIndex, stepIndex),
 											)
@@ -53,15 +48,13 @@ export default function Steps() {
 											const newKey = keyFromStep(step, groupIndex, stepIndex);
 
 											setCheckedIngredients((prev) => {
-												if (prev === "all") {
-													return new Set<Key>([newKey]);
-												} else if (prev.has(newKey)) {
-													const newSet = new Set(prev);
+												const newSet = new Set(prev);
+												if (newSet.has(newKey)) {
 													newSet.delete(newKey);
-													return newSet;
 												} else {
-													return new Set<Key>([...Array.from(prev), newKey]);
+													newSet.add(newKey);
 												}
+												return newSet;
 											});
 										}}
 									>

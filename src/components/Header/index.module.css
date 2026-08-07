@@ -1,0 +1,8 @@
+.list {
+	width: 100%;
+	max-width: 48rem;
+	margin-inline: auto;
+	padding-top: 4rem;
+	padding-inline: 1.5rem;
+	flex-grow: 1;
+}

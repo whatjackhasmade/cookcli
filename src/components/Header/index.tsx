@@ -1,8 +1,5 @@
-import React from "react";
-
-import { Navbar, NavbarContent, NavbarItem } from "@heroui/navbar";
-
 import { Link } from "@/components/Link";
+import styles from "./index.module.css";
 
 const menuItems = [
 	{
@@ -13,12 +10,10 @@ const menuItems = [
 
 export function Header() {
 	return (
-		<Navbar position="static">
-			<NavbarContent className="container mx-auto max-w-3xl pt-16 px-6 flex-grow">
+		<nav>
+			<ul className={styles.list}>
 				{menuItems.map((item) => (
-					<NavbarItem
-						key={item.label}
-					>
+					<li key={item.label}>
 						<Link
 							next={{
 								href: item.href,
@@ -26,9 +21,9 @@ export function Header() {
 						>
 							{item.label}
 						</Link>
-					</NavbarItem>
+					</li>
 				))}
-			</NavbarContent>
-		</Navbar>
+			</ul>
+		</nav>
 	);
 }

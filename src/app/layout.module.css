@@ -1,0 +1,23 @@
+.body {
+	min-height: 100vh;
+	background: var(--background);
+	font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.page {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.main {
+	display: block;
+	width: 100%;
+	max-width: 48rem;
+	margin-inline: auto;
+	flex-grow: 1;
+	padding: 4rem 1.5rem 1.25rem;
+}

@@ -10,7 +10,6 @@ Quick reference:
 
 - `npm run dev` / `npm run build` — copy recipe images then run Next.js
 - `npm run fix` — Biome format + lint (this repo uses Biome, not ESLint/Prettier)
-- No test suite is configured in this repo.
 - Recipes are `.cook` (Cooklang) files under `src/recipes/<category>/`; the
   file tree is the content — there's no database or CMS.
 - `RecipeContext` (`src/components/Recipe/context/index.tsx`) is the single
