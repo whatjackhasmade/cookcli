@@ -1,8 +1,6 @@
 import "@/styles/globals.css";
-import clsx from "clsx";
 import type { Metadata, Viewport } from "next";
 import { Header } from "@/components/Header";
-import { Providers } from "@/components/Providers";
 import { fontSans } from "@/config/fonts";
 
 export const metadata: Metadata = {
@@ -29,26 +27,21 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html suppressHydrationWarning lang="en">
+		<html className="dark" lang="en">
 			<head />
 			<body
-				className={clsx(
-					"min-h-screen bg-background font-sans antialiased",
-					fontSans.variable,
-				)}
+				className={`min-h-screen bg-background font-sans antialiased ${fontSans.variable}`}
 				style={{
 					paddingBottom: "25rem",
 					paddingTop: "3rem",
 				}}
 			>
-				<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-					<div className="relative flex flex-col min-h-screen">
-						<Header />
-						<main className="block container mx-auto max-w-3xl pt-16 px-6 py-5 flex-grow w-full">
-							{children}
-						</main>
-					</div>
-				</Providers>
+				<div className="relative flex flex-col min-h-screen">
+					<Header />
+					<main className="block container mx-auto max-w-3xl pt-16 px-6 py-5 flex-grow w-full">
+						{children}
+					</main>
+				</div>
 			</body>
 		</html>
 	);
