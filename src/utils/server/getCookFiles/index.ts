@@ -12,11 +12,11 @@ export async function getCookFiles({
 	dir = recipesPath,
 	fileList = [],
 }: GetCookFilesArgs = {}): Promise<string[]> {
-	const files = await fs.promises.readdir(dir);
+	const files = await fs.promises.readdir(/* turbopackIgnore: true */ dir);
 
 	for (const file of files) {
-		const filePath = path.join(dir, file);
-		const stat = await fs.promises.stat(filePath);
+		const filePath = path.join(/* turbopackIgnore: true */ dir, file);
+		const stat = await fs.promises.stat(/* turbopackIgnore: true */ filePath);
 
 		if (stat.isDirectory()) {
 			await getCookFiles({
