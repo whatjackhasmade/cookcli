@@ -1,6 +1,5 @@
 import nodePath from "node:path";
 import {
-	getNumericValue,
 	Parser,
 	type Ingredient as CooklangIngredient,
 	type Item as CooklangItem,
@@ -56,6 +55,28 @@ export type FlatItem =
 	| FlatCookwareItem
 	| FlatTimerItem;
 
+// @cooklang/cooklang's own `Value`/`Number` type declarations are broken -
+// the "Number" they reference resolves to TS's built-in boxed-number
+// interface, not the WASM parser's actual `{ type: "regular" | "fraction",
+// value }` shape - so we cast to this local type to work with the real
+// runtime shape.
+type CooklangFractionOrRegular =
+	| { type: "regular"; value: number }
+	| { type: "fraction"; value: { whole: number; num: number; den: number } };
+
+// getNumericValue() only unwraps the "regular" sub-type; for "fraction"
+// (a recipe writing a quantity like `1/2`) it does `Number({whole, num,
+// den, err})`, which is NaN. Compute fractions ourselves instead.
+function toNumber(numValue: CooklangFractionOrRegular): number {
+	switch (numValue.type) {
+		case "fraction":
+			const { whole, num, den } = numValue.value;
+			return whole + num / den;
+		default:
+			return numValue.value;
+	}
+}
+
 // The recipe author omits Cooklang's `%unit` separator (e.g. `{575g}` not
 // `{575%g}`), so the parser can't split quantity from unit - it hands back
 // the whole thing as opaque text. Preserved as-is (a single string) rather
@@ -65,15 +86,16 @@ function flattenValue(value: CooklangValue): number | string {
 		case "text":
 			return value.value;
 		case "range": {
-			const start = getNumericValue({
-				type: "number",
-				value: value.value.start,
-			});
-			const end = getNumericValue({ type: "number", value: value.value.end });
+			const start = toNumber(
+				value.value.start as unknown as CooklangFractionOrRegular,
+			);
+			const end = toNumber(
+				value.value.end as unknown as CooklangFractionOrRegular,
+			);
 			return `${start}-${end}`;
 		}
 		case "number":
-			return getNumericValue(value) ?? 0;
+			return toNumber(value.value as unknown as CooklangFractionOrRegular);
 	}
 }
 
