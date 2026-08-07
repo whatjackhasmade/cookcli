@@ -5,10 +5,6 @@ import styles from "./index.module.css";
 export default function Cover() {
 	const { recipe } = useRecipe();
 
-	if (!recipe.slug) {
-		return null;
-	}
-
 	return (
 		<div className={styles.wrapper}>
 			<Image

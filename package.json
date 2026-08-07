@@ -4,7 +4,9 @@
 	"private": true,
 	"scripts": {
 		"build": "npm run images && npm run recipes && next build",
-		"dev": "npm run images && npm run recipes && next dev --turbopack",
+		"dev": "npm run images && npm run recipes && concurrently -n recipes,next -c yellow,blue \"npm:dev:recipes\" \"npm:dev:next\"",
+		"dev:next": "next dev --turbopack",
+		"dev:recipes": "npx tsx watch --clear-screen=false --include \"src/recipes/**/*.cook\" scripts/generateRecipeData.ts",
 		"fix": "npm run format && npm run lint",
 		"format": "npx @biomejs/biome format --write",
 		"images": "npx tsx scripts/copyImages.ts",
@@ -25,6 +27,7 @@
 		"@types/node": "26.1.2",
 		"@types/react": "19.2.18",
 		"@types/react-dom": "19.2.4",
+		"concurrently": "10.0.4",
 		"gray-matter": "4.0.3",
 		"tsx": "4.23.10",
 		"typescript": "7.0.2",

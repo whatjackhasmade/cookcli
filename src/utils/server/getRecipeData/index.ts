@@ -12,6 +12,7 @@ export * from "./types";
 export const getRecipeData = cache(
 	async (path: string): Promise<RecipeData> => {
 		const load = recipeDataLoaders[path];
+
 		if (!load) {
 			throw new Error(`No recipe found for path "${path}"`);
 		}
