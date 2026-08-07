@@ -18,8 +18,8 @@ CMS — the file tree under `src/recipes` *is* the content.
 - `npm run lint` — `biome lint --write`
 - `npm run format` — `biome format --write`
 - `npm run fix` — format, then lint
+- `npm run test` — `vitest run`
 - Node version is pinned in `.nvmrc` (v22.13.0)
-- There is no test suite/framework configured in this repo.
 
 Linting/formatting is Biome (`biome.json`), not ESLint/Prettier — tabs,
 double quotes, organize-imports on save. `prettier` is a devDependency but
@@ -30,8 +30,11 @@ unused by any script.
 **Content pipeline** (`src/utils/server/`):
 - `getCookFiles` recursively walks `src/recipes` for `*.cook` files.
 - `getRecipeData` reads a `.cook` file, splits YAML frontmatter from the body
-  with `gray-matter`, and parses the body with `@cooklang/cooklang-ts`'s
-  `Recipe` class to get `ingredients`/`steps`.
+  with `gray-matter`, and parses the body with `@cooklang/cooklang`'s WASM
+  `Parser` to get `ingredients`/`steps`. The parser's native shape
+  (`sections[].content[].value.items[]`, referencing ingredients/cookware/
+  timers by index) is flattened back into a flat `Item[][]` right there, so
+  the rest of the app never deals with that indirection.
 - The `Recipe` type (`src/components/Recipe/types.ts`) is just
   `Awaited<ReturnType<typeof getRecipeData>>` — there's no separately
   maintained schema, so changes to `getRecipeData`'s return shape propagate
