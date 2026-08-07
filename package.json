@@ -3,13 +3,14 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"build": "npm run images && next build",
-		"dev": "npm run images && next dev --turbopack",
+		"build": "npm run images && npm run recipes && next build",
+		"dev": "npm run images && npm run recipes && next dev --turbopack",
 		"fix": "npm run format && npm run lint",
 		"format": "npx @biomejs/biome format --write",
 		"images": "npx tsx scripts/copyImages.ts",
 		"lint": "npx @biomejs/biome lint --write",
 		"postinstall": "npx tsx scripts/patchCooklangWasm.ts",
+		"recipes": "npx tsx scripts/generateRecipeManifest.ts",
 		"start": "next start",
 		"test": "vitest run"
 	},

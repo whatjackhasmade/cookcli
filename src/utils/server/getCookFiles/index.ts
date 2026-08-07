@@ -1,32 +1,5 @@
-import fs from "node:fs";
-import path from "node:path";
+import { recipeManifest } from "../recipeManifest.generated";
 
-interface GetCookFilesArgs {
-	dir?: string;
-	fileList?: string[];
-}
-
-const recipesPath = `${process.cwd()}/src/recipes`;
-
-export async function getCookFiles({
-	dir = recipesPath,
-	fileList = [],
-}: GetCookFilesArgs = {}): Promise<string[]> {
-	const files = await fs.promises.readdir(/* turbopackIgnore: true */ dir);
-
-	for (const file of files) {
-		const filePath = path.join(/* turbopackIgnore: true */ dir, file);
-		const stat = await fs.promises.stat(/* turbopackIgnore: true */ filePath);
-
-		if (stat.isDirectory()) {
-			await getCookFiles({
-				dir: filePath,
-				fileList,
-			});
-		} else if (file.endsWith(".cook")) {
-			fileList.push(filePath);
-		}
-	}
-
-	return fileList;
+export async function getCookFiles(): Promise<string[]> {
+	return Object.keys(recipeManifest);
 }

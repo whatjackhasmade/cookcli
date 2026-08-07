@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import nodePath from "node:path";
 import {
 	getNumericValue,
@@ -9,6 +8,7 @@ import {
 	type ScaledRecipeWithReport,
 	type Value as CooklangValue,
 } from "@cooklang/cooklang";
+import { recipeManifest } from "../recipeManifest.generated";
 
 type CooklangRecipe = ScaledRecipeWithReport["recipe"];
 import matter from "gray-matter";
@@ -157,7 +157,11 @@ function toRecipeMetadata(
 }
 
 export async function getRecipeData(path: string) {
-	const cookFileContent = await fs.promises.readFile(path, "utf-8");
+	const cookFileContent = recipeManifest[path];
+	if (cookFileContent === undefined) {
+		throw new Error(`No recipe found for path "${path}"`);
+	}
+
 	const { data, content } = matter(cookFileContent);
 	const metadata = toRecipeMetadata(data, path);
 	const { recipe } = parser.parse(content);

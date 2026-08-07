@@ -44,5 +44,8 @@ next-env.d.ts
 # generated recipe images (copied from src/recipes at build time)
 public/recipes
 
+# generated recipe manifest (bundled from src/recipes at build time)
+src/utils/server/recipeManifest.generated.ts
+
 # jetbrains / local scratch
 .idea

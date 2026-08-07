@@ -1,9 +1,5 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-	outputFileTracingIncludes: {
-		"/[slug]": ["./src/recipes/**/*.cook"],
-	},
-};
+const nextConfig: NextConfig = {};
 
 export default nextConfig;
