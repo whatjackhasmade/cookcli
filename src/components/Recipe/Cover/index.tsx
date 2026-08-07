@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useRecipe } from "../context";
+import styles from "./index.module.css";
 
 export default function Cover() {
 	const { recipe } = useRecipe();
@@ -9,23 +10,9 @@ export default function Cover() {
 	}
 
 	return (
-		<div
-			style={{
-				marginBottom: "2rem",
-				width: "100%",
-				position: "relative",
-				height: 300,
-			}}
-		>
+		<div className={styles.wrapper}>
 			<Image
-				style={{
-					objectFit: "cover",
-					position: "absolute",
-					top: 0,
-					left: 0,
-					width: "100%",
-					height: "100%",
-				}}
+				className={styles.image}
 				src={`/recipes/${recipe.slug}.jpg`}
 				alt={recipe.metadata.title}
 				width={1000}

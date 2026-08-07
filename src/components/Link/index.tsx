@@ -3,9 +3,14 @@ import type { ReactNode } from "react";
 
 interface LinkProps {
 	children: ReactNode;
+	className?: string;
 	next: NextLinkProps;
 }
 
-export function Link({ children, next }: LinkProps) {
-	return <NextLink {...next}>{children}</NextLink>;
+export function Link({ children, className, next }: LinkProps) {
+	return (
+		<NextLink className={className} {...next}>
+			{children}
+		</NextLink>
+	);
 }

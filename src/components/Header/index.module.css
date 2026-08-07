@@ -1,8 +1,41 @@
-.list {
+.header {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	border-bottom: 1px solid var(--border-color);
+	background: color-mix(in srgb, var(--background) 85%, transparent);
+	backdrop-filter: blur(8px);
+}
+
+.inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 	width: 100%;
 	max-width: 48rem;
 	margin-inline: auto;
-	padding-top: 4rem;
-	padding-inline: 1.5rem;
-	flex-grow: 1;
+	padding: 1rem 1.5rem;
+}
+
+.brand {
+	font-size: 1.05rem;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+}
+
+.list {
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+}
+
+.navLink {
+	position: relative;
+	font-size: 0.9rem;
+	color: var(--color-muted-foreground);
+	transition: color 0.15s ease;
+}
+
+.navLink:hover {
+	color: var(--foreground);
 }

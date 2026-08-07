@@ -22,81 +22,69 @@ export default function Steps() {
 	return (
 		<ol className={styles.list}>
 			{steps.map((stepGroup, groupIndex) => (
-				<li key={groupIndex}>
-					{stepGroup.map((step, stepIndex) => {
-						switch (step.type) {
-							case "text":
-								return (
-									<span key={keyFromStep(step, groupIndex, stepIndex)}>
-										{step.value}
-									</span>
-								);
-							case "ingredient":
-								return (
-									<button
-										style={style}
-										className={
-											checkedIngredients.has(
-												keyFromStep(step, groupIndex, stepIndex),
-											)
-												? "strikethrough"
-												: undefined
-										}
-										key={keyFromStep(step, groupIndex, stepIndex)}
-										type="button"
-										onClick={() => {
-											const newKey = keyFromStep(step, groupIndex, stepIndex);
+				<li className={styles.step} key={groupIndex}>
+					<span className={styles.stepContent}>
+						{stepGroup.map((step, stepIndex) => {
+							switch (step.type) {
+								case "text":
+									return (
+										<span key={keyFromStep(step, groupIndex, stepIndex)}>
+											{step.value}
+										</span>
+									);
+								case "ingredient": {
+									const checked = checkedIngredients.has(
+										keyFromStep(step, groupIndex, stepIndex),
+									);
 
-											setCheckedIngredients((prev) => {
-												const newSet = new Set(prev);
-												if (newSet.has(newKey)) {
-													newSet.delete(newKey);
-												} else {
-													newSet.add(newKey);
-												}
-												return newSet;
-											});
-										}}
-									>
-										<span
-											style={{
-												color: "var(--ingredient-color)",
+									return (
+										<button
+											style={style}
+											className={`${styles.ingredient}${checked ? " strikethrough" : ""}`}
+											key={keyFromStep(step, groupIndex, stepIndex)}
+											type="button"
+											onClick={() => {
+												const newKey = keyFromStep(step, groupIndex, stepIndex);
+
+												setCheckedIngredients((prev) => {
+													const newSet = new Set(prev);
+													if (newSet.has(newKey)) {
+														newSet.delete(newKey);
+													} else {
+														newSet.add(newKey);
+													}
+													return newSet;
+												});
 											}}
 										>
+											<span className={styles.ingredientName}>{step.name}</span>
+											<span className={styles.ingredientQuantity}>
+												({step.quantity}
+												{step.units ? ` ${step.units}` : ""})
+											</span>
+										</button>
+									);
+								}
+								case "timer":
+									return (
+										<span
+											className={styles.timer}
+											key={keyFromStep(step, groupIndex, stepIndex)}
+										>
+											{step.quantity} {step.units}
+										</span>
+									);
+								case "cookware":
+									return (
+										<span key={keyFromStep(step, groupIndex, stepIndex)}>
 											{step.name}
 										</span>
-										<span
-											style={{
-												color: "var(--ingredient-quantity-color)",
-												marginLeft: "3px",
-											}}
-										>
-											({step.quantity}
-											{step.units ? ` ${step.units}` : ""})
-										</span>
-									</button>
-								);
-							case "timer":
-								return (
-									<span
-										key={keyFromStep(step, groupIndex, stepIndex)}
-										style={{
-											color: "var(--timer-color)",
-										}}
-									>
-										{step.quantity} {step.units}
-									</span>
-								);
-							case "cookware":
-								return (
-									<span key={keyFromStep(step, groupIndex, stepIndex)}>
-										{step.name}
-									</span>
-								);
-							default:
-								return null;
-						}
-					})}
+									);
+								default:
+									return null;
+							}
+						})}
+					</span>
 				</li>
 			))}
 		</ol>

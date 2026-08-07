@@ -32,51 +32,50 @@ export default function Ingredients() {
 	}
 
 	return (
-		<table aria-label="Ingredients list" className={styles.table}>
-			<thead>
-				<tr>
-					<th>
-						<span className="sr-only">Checked</span>
-					</th>
-					<th>Ingredient</th>
-					<th>Quantity</th>
-				</tr>
-			</thead>
-			<tbody>
-				{filteredIngredients.map((ingredient, index) => {
-					const id = `${idFromIngredientName(ingredient.name, ingredient.quantity, ingredient.units)}-${index}`;
-					const checked = checkedIngredients.has(id);
+		<div className={styles.tableWrapper}>
+			<table aria-label="Ingredients list" className={styles.table}>
+				<thead>
+					<tr>
+						<th>
+							<span className="sr-only">Checked</span>
+						</th>
+						<th>Ingredient</th>
+						<th>Quantity</th>
+					</tr>
+				</thead>
+				<tbody>
+					{filteredIngredients.map((ingredient, index) => {
+						const id = `${idFromIngredientName(ingredient.name, ingredient.quantity, ingredient.units)}-${index}`;
+						const checked = checkedIngredients.has(id);
 
-					return (
-						<tr
-							key={id}
-							className={checked ? styles.checkedRow : undefined}
-						>
-							<td className={styles.checkboxCell}>
-								<label htmlFor={id} className={styles.cellLabel}>
-									<input
-										id={id}
-										type="checkbox"
-										checked={checked}
-										onChange={() => toggleIngredient(id)}
-										aria-label={`Check off ${ingredient.name}`}
-									/>
-								</label>
-							</td>
-							<td>
-								<label htmlFor={id} className={styles.cellLabel}>
-									{uppercaseFirstLetter(ingredient.name)}
-								</label>
-							</td>
-							<td>
-								<label htmlFor={id} className={styles.cellLabel}>
-									{ingredient.quantity} {ingredient.units}
-								</label>
-							</td>
-						</tr>
-					);
-				})}
-			</tbody>
-		</table>
+						return (
+							<tr key={id} className={checked ? styles.checkedRow : undefined}>
+								<td className={styles.checkboxCell}>
+									<label htmlFor={id} className={styles.cellLabel}>
+										<input
+											id={id}
+											type="checkbox"
+											checked={checked}
+											onChange={() => toggleIngredient(id)}
+											aria-label={`Check off ${ingredient.name}`}
+										/>
+									</label>
+								</td>
+								<td>
+									<label htmlFor={id} className={styles.cellLabel}>
+										{uppercaseFirstLetter(ingredient.name)}
+									</label>
+								</td>
+								<td>
+									<label htmlFor={id} className={styles.cellLabel}>
+										{ingredient.quantity} {ingredient.units}
+									</label>
+								</td>
+							</tr>
+						);
+					})}
+				</tbody>
+			</table>
+		</div>
 	);
 }

@@ -11,25 +11,11 @@ export default function Servings() {
 	}
 
 	return (
-		<form
-			style={{
-				marginBottom: "1rem",
-			}}
-		>
-			<fieldset>
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						gap: "4px",
-					}}
-				>
+		<form className={styles.form}>
+			<fieldset className={styles.fieldset}>
+				<div className={styles.row}>
 					<button
 						className={styles.stepperButton}
-						style={{
-							padding: "4px",
-							width: "20px",
-						}}
 						type="button"
 						onClick={() =>
 							setServings((count) => {
@@ -41,11 +27,7 @@ export default function Servings() {
 						-
 					</button>
 					<input
-						style={{
-							padding: "4px",
-							maxWidth: "30px",
-							textAlign: "center",
-						}}
+						className={styles.input}
 						type="text"
 						value={servings}
 						onChange={(event) => {
@@ -57,24 +39,12 @@ export default function Servings() {
 					/>
 					<button
 						className={styles.stepperButton}
-						style={{
-							padding: "4px",
-							width: "20px",
-						}}
 						type="button"
 						onClick={() => setServings((count) => count + 1)}
 					>
 						+
 					</button>
-					<span
-						style={{
-							display: "inline-block",
-							marginLeft: "4px",
-							fontSize: "1.1rem",
-						}}
-					>
-						Portions
-					</span>
+					<span className={styles.label}>Portions</span>
 				</div>
 				<button
 					className={styles.resetButton}
