@@ -10,20 +10,28 @@ const menuItems = [
 
 export function Header() {
 	return (
-		<nav>
-			<ul className={styles.list}>
-				{menuItems.map((item) => (
-					<li key={item.label}>
-						<Link
-							next={{
-								href: item.href,
-							}}
-						>
-							{item.label}
-						</Link>
-					</li>
-				))}
-			</ul>
-		</nav>
+		<header className={styles.header}>
+			<div className={styles.inner}>
+				<Link className={styles.brand} next={{ href: "/" }}>
+					Cookbook
+				</Link>
+				<nav>
+					<ul className={styles.list}>
+						{menuItems.map((item) => (
+							<li key={item.label}>
+								<Link
+									className={styles.navLink}
+									next={{
+										href: item.href,
+									}}
+								>
+									{item.label}
+								</Link>
+							</li>
+						))}
+					</ul>
+				</nav>
+			</div>
+		</header>
 	);
 }

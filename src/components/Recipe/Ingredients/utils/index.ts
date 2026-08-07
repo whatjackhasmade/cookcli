@@ -1,1 +1,1 @@
-export * from "./idFromIngredientName"
+export * from "./idFromIngredientName";

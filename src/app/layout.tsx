@@ -30,13 +30,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<head />
-			<body
-				className={`${styles.body} ${fontSans.variable}`}
-				style={{
-					paddingBottom: "25rem",
-					paddingTop: "3rem",
-				}}
-			>
+			<body className={`${styles.body} ${fontSans.variable}`}>
 				<div className={styles.page}>
 					<Header />
 					<main className={styles.main}>{children}</main>

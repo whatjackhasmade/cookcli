@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import styles from "./error.module.css";
 
 export default function ErrorComponent({
 	error,
@@ -16,9 +17,10 @@ export default function ErrorComponent({
 	}, [error]);
 
 	return (
-		<div>
-			<h2>Something went wrong!</h2>
+		<div className={styles.wrapper}>
+			<h2 className={styles.title}>Something went wrong!</h2>
 			<button
+				className={styles.button}
 				onClick={
 					// Attempt to recover by trying to re-render the segment
 					() => reset()

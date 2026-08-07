@@ -32,10 +32,13 @@ export default async function Home() {
 						{/* Uppercase first letter */}
 						{category.charAt(0).toUpperCase() + category.slice(1)}
 					</h2>
-					<ul>
+					<ul className={styles.recipeList}>
 						{value.map((recipe) => (
-							<li key={recipe.path}>
-								<Link href={`/${recipe.path.split("/").pop()?.split(".")[0]}`}>
+							<li className={styles.recipeItem} key={recipe.path}>
+								<Link
+									className={styles.recipeLink}
+									href={`/${recipe.path.split("/").pop()?.split(".")[0]}`}
+								>
 									{recipe.metadata.title}
 								</Link>
 							</li>
