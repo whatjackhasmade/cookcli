@@ -47,9 +47,7 @@ export default function Ingredients() {
 
 	return (
 		<div className={styles.tableWrapper}>
-			<div
-				className={isCollapsed ? styles.header : styles.headerExpanded}
-			>
+			<div className={isCollapsed ? styles.header : styles.headerExpanded}>
 				<button
 					aria-expanded={!isCollapsed}
 					className={styles.headerToggle}
@@ -58,9 +56,7 @@ export default function Ingredients() {
 				>
 					<ChevronDownIcon
 						className={
-							isCollapsed
-								? styles.headerChevronCollapsed
-								: styles.headerChevron
+							isCollapsed ? styles.headerChevronCollapsed : styles.headerChevron
 						}
 					/>
 					Ingredients
@@ -125,9 +121,7 @@ export default function Ingredients() {
 						</tbody>
 					</table>
 				) : (
-					<p className={styles.allChecked}>
-						All ingredients checked off.
-					</p>
+					<p className={styles.allChecked}>All ingredients checked off.</p>
 				))}
 		</div>
 	);
