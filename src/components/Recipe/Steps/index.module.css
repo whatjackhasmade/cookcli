@@ -10,6 +10,7 @@
 .step {
 	position: relative;
 	display: flex;
+	align-items: flex-start;
 	gap: 0.9rem;
 	line-height: 1.6;
 }
@@ -31,9 +32,6 @@
 	color: var(--color-muted-foreground);
 }
 
-.stepContent {
-	padding-top: 0.2rem;
-}
 
 .ingredient {
 	display: inline-flex;
