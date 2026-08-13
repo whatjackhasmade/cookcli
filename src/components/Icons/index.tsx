@@ -162,6 +162,90 @@ export const HeartFilledIcon = ({
 	</svg>
 );
 
+export const MinusIcon = (props: IconSvgProps) => (
+	<svg
+		aria-hidden="true"
+		fill="none"
+		focusable="false"
+		height="1em"
+		role="presentation"
+		viewBox="0 0 24 24"
+		width="1em"
+		{...props}
+	>
+		<path
+			d="M5 12H19"
+			stroke="currentColor"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth="2"
+		/>
+	</svg>
+);
+
+export const PlusIcon = (props: IconSvgProps) => (
+	<svg
+		aria-hidden="true"
+		fill="none"
+		focusable="false"
+		height="1em"
+		role="presentation"
+		viewBox="0 0 24 24"
+		width="1em"
+		{...props}
+	>
+		<path
+			d="M12 5V19M5 12H19"
+			stroke="currentColor"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth="2"
+		/>
+	</svg>
+);
+
+export const ResetIcon = (props: IconSvgProps) => (
+	<svg
+		aria-hidden="true"
+		fill="none"
+		focusable="false"
+		height="1em"
+		role="presentation"
+		viewBox="0 0 24 24"
+		width="1em"
+		{...props}
+	>
+		<path
+			d="M3 12a9 9 0 1 0 2.64-6.36M3 12V6M3 12H9"
+			stroke="currentColor"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth="2"
+		/>
+	</svg>
+);
+
+export const ChevronDownIcon = (props: IconSvgProps) => (
+	<svg
+		aria-hidden="true"
+		fill="none"
+		focusable="false"
+		height="1em"
+		role="presentation"
+		viewBox="0 0 24 24"
+		width="1em"
+		{...props}
+	>
+		<path
+			d="M6 9L12 15L18 9"
+			stroke="currentColor"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth="2"
+		/>
+	</svg>
+);
+
 export const SearchIcon = (props: IconSvgProps) => (
 	<svg
 		aria-hidden="true"

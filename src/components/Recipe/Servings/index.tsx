@@ -1,3 +1,4 @@
+import { MinusIcon, PlusIcon, ResetIcon } from "@/components/Icons";
 import { isValidNumber } from "@/utils";
 import { useRecipe } from "../context";
 import styles from "./index.module.css";
@@ -10,24 +11,28 @@ export default function Servings() {
 		return null;
 	}
 
+	const isAtMinimum = servings <= 1;
+	const isDefault = servings === defaultServings;
+
 	return (
-		<form className={styles.form}>
+		<form className={styles.wrapper}>
 			<fieldset className={styles.fieldset}>
-				<div className={styles.row}>
+				<span className={styles.label}>Portions</span>
+				<div className={styles.stepper}>
 					<button
+						aria-label="Decrease portions"
 						className={styles.stepperButton}
+						disabled={isAtMinimum}
 						type="button"
-						onClick={() =>
-							setServings((count) => {
-								if (count === 1) return 1;
-								return count - 1;
-							})
-						}
+						onClick={() => setServings((count) => Math.max(1, count - 1))}
 					>
-						-
+						<MinusIcon />
 					</button>
 					<input
+						aria-label="Number of portions"
 						className={styles.input}
+						inputMode="numeric"
+						pattern="[0-9]*"
 						type="text"
 						value={servings}
 						onChange={(event) => {
@@ -38,20 +43,22 @@ export default function Servings() {
 						}}
 					/>
 					<button
+						aria-label="Increase portions"
 						className={styles.stepperButton}
 						type="button"
 						onClick={() => setServings((count) => count + 1)}
 					>
-						+
+						<PlusIcon />
 					</button>
-					<span className={styles.label}>Portions</span>
 				</div>
 				<button
+					aria-label="Reset to default portions"
 					className={styles.resetButton}
+					disabled={isDefault}
 					type="button"
 					onClick={() => setServings(defaultServings)}
 				>
-					Reset
+					<ResetIcon />
 				</button>
 			</fieldset>
 		</form>

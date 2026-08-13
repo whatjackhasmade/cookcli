@@ -14,6 +14,64 @@
 	overflow: hidden;
 }
 
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.75rem;
+	padding: 0.5rem 0.75rem;
+}
+
+.headerExpanded {
+	composes: header;
+	border-bottom: 1px solid var(--border-color);
+}
+
+.headerToggle {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.25rem 0;
+	border: none;
+	background: transparent;
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: var(--foreground);
+	cursor: pointer;
+	appearance: none;
+}
+
+.headerChevron,
+.headerChevronCollapsed {
+	transition: transform 0.15s ease;
+}
+
+.headerChevronCollapsed {
+	transform: rotate(-90deg);
+}
+
+.hideCheckedLabel {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 0.85rem;
+	color: var(--color-muted-foreground);
+	cursor: pointer;
+}
+
+.hideCheckedLabel input[type="checkbox"] {
+	width: 1rem;
+	height: 1rem;
+	accent-color: var(--ingredient-color);
+	cursor: pointer;
+}
+
+.allChecked {
+	padding: 1rem 0.75rem;
+	border-top: 1px solid var(--border-color);
+	color: var(--color-muted-foreground);
+}
+
 .table {
 	width: 100%;
 	border-collapse: collapse;

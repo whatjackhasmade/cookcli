@@ -1,60 +1,104 @@
-.form {
+.wrapper {
 	margin-bottom: 1.5rem;
 }
 
 .fieldset {
-	border: none;
-}
-
-.row {
 	display: flex;
 	align-items: center;
-	gap: 0.5rem;
+	gap: 0.75rem;
+	padding: 0.6rem 0.75rem;
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-md);
+	background: var(--surface);
+}
+
+.label {
+	font-size: 0.9rem;
+	font-weight: 500;
+	color: var(--color-muted-foreground);
+}
+
+.stepper {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	margin-left: auto;
 }
 
 .stepperButton {
 	display: flex;
+	flex-shrink: 0;
 	align-items: center;
 	justify-content: center;
 	width: 1.85rem;
 	height: 1.85rem;
-	border-radius: var(--radius-sm);
+	border: none;
+	border-radius: 50%;
 	background: var(--color-button-background);
 	color: var(--color-button-foreground);
-	font-size: 1rem;
-	line-height: 1;
-	transition: background-color 0.15s ease;
+	font-size: 0.9rem;
+	cursor: pointer;
+	appearance: none;
+	transition:
+		background-color 0.15s ease,
+		transform 0.1s ease;
 }
 
-.stepperButton:hover {
+.stepperButton:hover:not(:disabled) {
 	background: var(--color-button-background-hover);
 }
 
-.input {
-	width: 2.75rem;
-	padding: 0.3rem;
-	text-align: center;
-	background: var(--surface);
-	border: 1px solid var(--border-color);
-	border-radius: var(--radius-sm);
-	color: var(--foreground);
+.stepperButton:active:not(:disabled) {
+	transform: scale(0.92);
 }
 
-.label {
-	margin-left: 0.25rem;
-	font-size: 0.95rem;
-	color: var(--color-muted-foreground);
+.stepperButton:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+.input {
+	width: 2rem;
+	padding: 0;
+	background: transparent;
+	border: none;
+	text-align: center;
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--foreground);
 }
 
 .resetButton {
-	margin-top: 0.5rem;
-	font-size: 0.8rem;
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: 1.85rem;
+	height: 1.85rem;
+	margin-left: 0.15rem;
+	border: none;
+	border-radius: 50%;
+	background: transparent;
+	font-size: 0.85rem;
 	color: var(--color-muted-foreground);
-	text-decoration: underline;
-	text-underline-offset: 2px;
-	transition: color 0.15s ease;
+	cursor: pointer;
+	appearance: none;
+	transition:
+		background-color 0.15s ease,
+		color 0.15s ease,
+		transform 0.1s ease;
 }
 
-.resetButton:hover {
+.resetButton:hover:not(:disabled) {
+	background: var(--surface-hover);
 	color: var(--foreground);
+}
+
+.resetButton:active:not(:disabled) {
+	transform: scale(0.92) rotate(-45deg);
+}
+
+.resetButton:disabled {
+	opacity: 0;
+	pointer-events: none;
 }
