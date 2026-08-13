@@ -16,7 +16,7 @@ export default function Steps() {
 		<ol className={styles.list}>
 			{steps.map((stepGroup, groupIndex) => (
 				<li className={styles.step} key={groupIndex}>
-					<span className={styles.stepContent}>
+					<span>
 						{stepGroup.map((step, stepIndex) => {
 							switch (step.type) {
 								case "text":
