@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import { Header } from "@/components/Header";
+import { MainContainer } from "@/components/MainContainer";
 import { Search } from "@/components/Search";
 import { fontSans } from "@/config/fonts";
 import { getRecipeSummaries } from "@/utils/server";
@@ -47,7 +48,7 @@ export default async function RootLayout({
 				<div className={styles.page}>
 					<Header />
 					<Search recipes={searchableRecipes} />
-					<main className={styles.main}>{children}</main>
+					<MainContainer>{children}</MainContainer>
 				</div>
 			</body>
 		</html>
