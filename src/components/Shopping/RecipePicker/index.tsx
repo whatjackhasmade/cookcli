@@ -108,45 +108,47 @@ export function RecipePicker({
 									return (
 										<li className={styles.recipeItem} key={recipe.path}>
 											<label className={styles.recipeLabel} htmlFor={id}>
-												<input
-													checked={checked}
-													id={id}
-													type="checkbox"
-													onChange={() => toggleRecipe(recipe.slug)}
-												/>
-												{recipe.title}
+												<span className={styles.recipeInfo}>
+													<input
+														checked={checked}
+														id={id}
+														type="checkbox"
+														onChange={() => toggleRecipe(recipe.slug)}
+													/>
+													{recipe.title}
+												</span>
+												{info && (
+													<div className={styles.stepper}>
+														<button
+															aria-label={`Decrease servings for ${recipe.title}`}
+															className={styles.stepperButton}
+															disabled={info.servings <= 1}
+															type="button"
+															onClick={() =>
+																updateServings(
+																	recipe.slug,
+																	Math.max(1, info.servings - 1),
+																)
+															}
+														>
+															<MinusIcon />
+														</button>
+														<span className={styles.stepperValue}>
+															{info.servings}
+														</span>
+														<button
+															aria-label={`Increase servings for ${recipe.title}`}
+															className={styles.stepperButton}
+															type="button"
+															onClick={() =>
+																updateServings(recipe.slug, info.servings + 1)
+															}
+														>
+															<PlusIcon />
+														</button>
+													</div>
+												)}
 											</label>
-											{info && (
-												<div className={styles.stepper}>
-													<button
-														aria-label={`Decrease servings for ${recipe.title}`}
-														className={styles.stepperButton}
-														disabled={info.servings <= 1}
-														type="button"
-														onClick={() =>
-															updateServings(
-																recipe.slug,
-																Math.max(1, info.servings - 1),
-															)
-														}
-													>
-														<MinusIcon />
-													</button>
-													<span className={styles.stepperValue}>
-														{info.servings}
-													</span>
-													<button
-														aria-label={`Increase servings for ${recipe.title}`}
-														className={styles.stepperButton}
-														type="button"
-														onClick={() =>
-															updateServings(recipe.slug, info.servings + 1)
-														}
-													>
-														<PlusIcon />
-													</button>
-												</div>
-											)}
 										</li>
 									);
 								})}
