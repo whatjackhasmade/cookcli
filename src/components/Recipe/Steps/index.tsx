@@ -9,13 +9,23 @@ function keyFromStep(step: FlatItem, groupIndex: number, stepIndex: number) {
 	return `${groupIndex}-${stepIndex}-${step.type}-${"name" in step ? step.name : ""}`;
 }
 
+function keyFromStepGroup(stepGroup: FlatItem[], groupIndex: number) {
+	const signature = stepGroup
+		.map((step) => `${step.type}-${"name" in step ? step.name : ""}`)
+		.join("|");
+	return `${groupIndex}-${signature}`;
+}
+
 export default function Steps() {
 	const { steps, checkedIngredients, setCheckedIngredients } = useRecipe();
 
 	return (
 		<ol className={styles.list}>
 			{steps.map((stepGroup, groupIndex) => (
-				<li className={styles.step} key={groupIndex}>
+				<li
+					className={styles.step}
+					key={keyFromStepGroup(stepGroup, groupIndex)}
+				>
 					<span>
 						{stepGroup.map((step, stepIndex) => {
 							switch (step.type) {

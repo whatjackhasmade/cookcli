@@ -2,6 +2,7 @@
 
 import { createContext, type ReactNode, useContext, useState } from "react";
 import { isValidNumber } from "@/utils";
+import { modifyIngredientQuantity } from "@/utils/modifyIngredientQuantity";
 import type { Recipe } from "../types";
 
 // Shared identity for an ingredient occurrence, used as the key in
@@ -9,31 +10,6 @@ import type { Recipe } from "../types";
 // the same index into recipe.ingredients, so checking one checks the other.
 export function ingredientCheckKey(index: number) {
 	return `ingredient-${index}`;
-}
-
-export function modifyIngredientQuantity(
-	ingredient: Recipe["ingredients"][number],
-	servingsMultiplier: number,
-) {
-	const quantity = (() => {
-		// Check if the quantity is a number or a string that converts to a valid number
-		if (typeof ingredient.quantity === "number") {
-			return ingredient.quantity * servingsMultiplier;
-		}
-
-		// If the quantity is a string, try to convert it to a number
-		const parsedQuantity = Number.parseFloat(ingredient.quantity);
-		if (!Number.isNaN(parsedQuantity)) {
-			return parsedQuantity * servingsMultiplier;
-		}
-
-		return ingredient.quantity;
-	})();
-
-	return {
-		...ingredient,
-		quantity,
-	};
 }
 
 interface RecipeState {

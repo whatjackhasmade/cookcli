@@ -1,0 +1,89 @@
+.picker {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.categoryTitle {
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--color-muted-foreground);
+	margin-bottom: 0.75rem;
+}
+
+.recipeList {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+}
+
+.recipeItem {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.75rem;
+	padding: 0.75rem 1rem;
+}
+
+.recipeItem:not(:last-child) {
+	border-bottom: 1px solid var(--border-color);
+}
+
+.recipeLabel {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	cursor: pointer;
+}
+
+.recipeLabel input[type="checkbox"] {
+	width: 1.1rem;
+	height: 1.1rem;
+	accent-color: var(--ingredient-color);
+	cursor: pointer;
+}
+
+.stepper {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.stepperButton {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: 1.6rem;
+	height: 1.6rem;
+	border: none;
+	border-radius: 50%;
+	background: var(--color-button-background);
+	color: var(--color-button-foreground);
+	font-size: 0.8rem;
+	cursor: pointer;
+	appearance: none;
+	transition: background-color 0.15s ease;
+}
+
+.stepperButton:hover:not(:disabled) {
+	background: var(--color-button-background-hover);
+}
+
+.stepperButton:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+.stepperValue {
+	min-width: 1.4rem;
+	text-align: center;
+	font-size: 0.9rem;
+	font-weight: 600;
+}

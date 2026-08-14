@@ -55,3 +55,6 @@ src/utils/server/recipeIndex.generated.ts
 
 # jetbrains / local scratch
 .idea
+
+# local planning docs
+/docs

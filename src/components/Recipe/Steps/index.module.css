@@ -32,7 +32,6 @@
 	color: var(--color-muted-foreground);
 }
 
-
 .ingredient {
 	display: inline-flex;
 	align-items: baseline;

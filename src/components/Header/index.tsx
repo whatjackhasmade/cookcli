@@ -6,6 +6,10 @@ const menuItems = [
 		label: "All recipes",
 		href: "/",
 	},
+	{
+		label: "Shopping list",
+		href: "/shopping",
+	},
 ];
 
 export function Header() {
