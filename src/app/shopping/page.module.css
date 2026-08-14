@@ -19,6 +19,13 @@
 		grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
 		align-items: start;
 	}
+
+	.pickerColumn {
+		position: sticky;
+		top: 5.5rem;
+		max-height: calc(100vh - 6.5rem);
+		overflow-y: auto;
+	}
 }
 
 .listHeader {
