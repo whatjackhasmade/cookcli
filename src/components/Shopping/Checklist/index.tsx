@@ -79,22 +79,26 @@ export function Checklist({ ingredients }: ChecklistProps) {
 								type="checkbox"
 								onChange={() => toggle(key)}
 							/>
-							<span className={styles.itemName}>
-								{uppercaseFirstLetter(ingredient.name)}
-							</span>
-							<span className={styles.itemAmounts}>
-								{ingredient.amounts
-									.map((amount) =>
-										amount.units
-											? `${amount.quantity} ${amount.units}`
-											: `${amount.quantity}`,
-									)
-									.join(", ")}
+							<span className={styles.itemContent}>
+								<span className={styles.itemMain}>
+									<span className={styles.itemName}>
+										{uppercaseFirstLetter(ingredient.name)}
+									</span>
+									<span className={styles.itemAmounts}>
+										{ingredient.amounts
+											.map((amount) =>
+												amount.units
+													? `${amount.quantity} ${amount.units}`
+													: `${amount.quantity}`,
+											)
+											.join(", ")}
+									</span>
+								</span>
+								<span className={styles.itemSources}>
+									{ingredient.recipeTitles.join(", ")}
+								</span>
 							</span>
 						</label>
-						<span className={styles.itemSources}>
-							{ingredient.recipeTitles.join(", ")}
-						</span>
 					</li>
 				);
 			})}

@@ -16,9 +16,6 @@
 
 .item,
 .checkedItem {
-	display: flex;
-	flex-direction: column;
-	gap: 0.15rem;
 	padding: 0.75rem 1rem;
 }
 
@@ -42,6 +39,20 @@
 	cursor: pointer;
 }
 
+.itemContent {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	flex: 1;
+	min-width: 0;
+}
+
+.itemMain {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
 .itemName {
 	flex: 1;
 }
@@ -63,7 +74,6 @@
 }
 
 .itemSources {
-	margin-left: 1.7rem;
 	font-size: 0.75rem;
 	color: var(--color-muted-foreground);
 }
