@@ -27,16 +27,25 @@ export function RecipePicker({
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
-	const [openCategories, setOpenCategories] = useState<Record<string, boolean>>(
-		{},
-	);
 
 	const selectedBySlug = new Map(selected.map((info) => [info.slug, info]));
+
+	const [openCategories, setOpenCategories] = useState<Record<string, boolean>>(
+		() => {
+			const initial: Record<string, boolean> = {};
+			for (const [category, recipes] of Object.entries(summariesByCategory)) {
+				initial[category] = recipes.some((recipe) =>
+					selectedBySlug.has(recipe.slug),
+				);
+			}
+			return initial;
+		},
+	);
 
 	function toggleCategory(category: string) {
 		setOpenCategories((prev) => ({
 			...prev,
-			[category]: prev[category] === false,
+			[category]: !prev[category],
 		}));
 	}
 
@@ -76,7 +85,7 @@ export function RecipePicker({
 	return (
 		<div className={styles.picker}>
 			{Object.entries(summariesByCategory).map(([category, recipes]) => {
-				const isOpen = openCategories[category] !== false;
+				const isOpen = Boolean(openCategories[category]);
 				const visibleRecipes = isOpen
 					? recipes
 					: recipes.filter((recipe) => selectedBySlug.has(recipe.slug));
