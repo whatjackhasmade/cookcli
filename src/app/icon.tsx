@@ -12,15 +12,10 @@ export default function Icon() {
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "center",
-				background: "#ffa238",
-				borderRadius: 7,
-				color: "#0a0a0b",
-				fontSize: 22,
-				fontWeight: 700,
-				fontFamily: "system-ui, sans-serif",
+				fontSize: 26,
 			}}
 		>
-			C
+			📖
 		</div>,
 		size,
 	);
