@@ -5,6 +5,22 @@
 	color: var(--color-muted-foreground);
 }
 
+.hideCheckedButton {
+	display: block;
+	margin-bottom: 0.75rem;
+	padding: 0;
+	border: none;
+	background: none;
+	font-size: 0.8rem;
+	color: var(--color-muted-foreground);
+	cursor: pointer;
+	transition: color 0.15s ease;
+}
+
+.hideCheckedButton:hover {
+	color: var(--foreground);
+}
+
 .list {
 	list-style: none;
 	display: flex;

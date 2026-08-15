@@ -22,6 +22,7 @@ function readStoredChecked(): Set<string> {
 export function Checklist({ ingredients }: ChecklistProps) {
 	const [checked, setChecked] = useState<Set<string>>(new Set());
 	const [hasLoaded, setHasLoaded] = useState(false);
+	const [hideChecked, setHideChecked] = useState(false);
 
 	// Seeded from localStorage on mount rather than in useState's initializer -
 	// that runs during SSR too, where window/localStorage don't exist.
@@ -60,48 +61,72 @@ export function Checklist({ ingredients }: ChecklistProps) {
 		);
 	}
 
-	return (
-		<ul className={styles.list}>
-			{ingredients.map((ingredient) => {
-				const key = ingredient.name.toLowerCase();
-				const isChecked = checked.has(key);
-				const id = `shopping-item-${key.replace(/\s+/g, "-")}`;
+	const checkedCount = ingredients.filter((ingredient) =>
+		checked.has(ingredient.name.toLowerCase()),
+	).length;
+	const visibleIngredients = hideChecked
+		? ingredients.filter(
+				(ingredient) => !checked.has(ingredient.name.toLowerCase()),
+			)
+		: ingredients;
 
-				return (
-					<li
-						className={isChecked ? styles.checkedItem : styles.item}
-						key={key}
-					>
-						<label className={styles.itemLabel} htmlFor={id}>
-							<input
-								checked={isChecked}
-								id={id}
-								type="checkbox"
-								onChange={() => toggle(key)}
-							/>
-							<span className={styles.itemContent}>
-								<span className={styles.itemMain}>
-									<span className={styles.itemName}>
-										{uppercaseFirstLetter(ingredient.name)}
+	return (
+		<>
+			{checkedCount > 0 && (
+				<button
+					className={styles.hideCheckedButton}
+					type="button"
+					onClick={() => setHideChecked((prev) => !prev)}
+				>
+					{hideChecked ? "Show" : "Hide"} checked ({checkedCount})
+				</button>
+			)}
+			{visibleIngredients.length === 0 ? (
+				<p className={styles.empty}>All ingredients checked off.</p>
+			) : (
+				<ul className={styles.list}>
+					{visibleIngredients.map((ingredient) => {
+						const key = ingredient.name.toLowerCase();
+						const isChecked = checked.has(key);
+						const id = `shopping-item-${key.replace(/\s+/g, "-")}`;
+
+						return (
+							<li
+								className={isChecked ? styles.checkedItem : styles.item}
+								key={key}
+							>
+								<label className={styles.itemLabel} htmlFor={id}>
+									<input
+										checked={isChecked}
+										id={id}
+										type="checkbox"
+										onChange={() => toggle(key)}
+									/>
+									<span className={styles.itemContent}>
+										<span className={styles.itemMain}>
+											<span className={styles.itemName}>
+												{uppercaseFirstLetter(ingredient.name)}
+											</span>
+											<span className={styles.itemAmounts}>
+												{ingredient.amounts
+													.map((amount) =>
+														amount.units
+															? `${amount.quantity} ${amount.units}`
+															: `${amount.quantity}`,
+													)
+													.join(", ")}
+											</span>
+										</span>
+										<span className={styles.itemSources}>
+											{ingredient.recipeTitles.join(", ")}
+										</span>
 									</span>
-									<span className={styles.itemAmounts}>
-										{ingredient.amounts
-											.map((amount) =>
-												amount.units
-													? `${amount.quantity} ${amount.units}`
-													: `${amount.quantity}`,
-											)
-											.join(", ")}
-									</span>
-								</span>
-								<span className={styles.itemSources}>
-									{ingredient.recipeTitles.join(", ")}
-								</span>
-							</span>
-						</label>
-					</li>
-				);
-			})}
-		</ul>
+								</label>
+							</li>
+						);
+					})}
+				</ul>
+			)}
+		</>
 	);
 }
