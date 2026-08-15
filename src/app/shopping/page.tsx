@@ -14,6 +14,7 @@ import styles from "./page.module.css";
 
 export const metadata = {
 	title: "Shopping list",
+	description: "Build a combined shopping list from your selected recipes.",
 };
 
 function groupByCategory(summaries: RecipeSummary[]) {

@@ -1,9 +1,12 @@
+import fs from "node:fs";
+import path from "node:path";
 import "@/styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import { Header } from "@/components/Header";
 import { MainContainer } from "@/components/MainContainer";
 import { Search } from "@/components/Search";
 import { fontSans } from "@/config/fonts";
+import { getSiteDescription } from "@/utils";
 import { getRecipeSummaries } from "@/utils/server";
 import styles from "./layout.module.css";
 
@@ -16,14 +19,26 @@ async function getSearchableRecipes() {
 	}));
 }
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+	? process.env.NEXT_PUBLIC_SITE_URL
+	: process.env.VERCEL_URL
+		? `https://${process.env.VERCEL_URL}`
+		: "http://localhost:3000";
+
+const siteDescription = getSiteDescription(
+	fs.readFileSync(path.join(process.cwd(), "README.md"), "utf-8"),
+);
+
 export const metadata: Metadata = {
+	metadataBase: new URL(siteUrl),
 	title: {
 		default: "Cookbook",
 		template: `%s - ${"Cookbook"}`,
 	},
-	description: "All the recipes you need to cook",
-	icons: {
-		icon: "/favicon.ico",
+	description: siteDescription,
+	openGraph: {
+		siteName: "Cookbook",
+		type: "website",
 	},
 };
 

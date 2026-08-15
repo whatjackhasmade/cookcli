@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import type { RecipeSummary } from "@/utils/server";
 import { getRecipeSummaries } from "@/utils/server";
@@ -14,6 +15,17 @@ async function getFormattedData() {
 		},
 		{} as Record<string, RecipeSummary[]>,
 	);
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+	const summaries = await getRecipeSummaries();
+	const categories = Array.from(
+		new Set(summaries.map((recipe) => recipe.category)),
+	).sort();
+
+	return {
+		description: `${summaries.length} recipes across ${categories.length} categories: ${categories.join(", ")}.`,
+	};
 }
 
 export default async function Home() {
