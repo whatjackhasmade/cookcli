@@ -9,6 +9,11 @@ A Next.js (App Router) site that renders a personal cookbook. Recipes are
 directly in the repo under `src/recipes/<category>/`. There is no database or
 CMS — the file tree under `src/recipes` *is* the content.
 
+A local mirror of the Cooklang spec lives in `docs/cooklang-spec/` — check it
+(especially `NOTES.md`, which documents where this app's pinned parser
+diverges from the upstream spec/conventions docs) before reviewing or writing
+`.cook` files.
+
 ## Commands
 
 - `npm run dev` — copies recipe images, then starts `next dev --turbopack`
