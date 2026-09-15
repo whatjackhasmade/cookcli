@@ -4,3 +4,10 @@
 	letter-spacing: -0.01em;
 	margin-bottom: 1.5rem;
 }
+
+.time {
+	margin-top: -1.15rem;
+	margin-bottom: 1.5rem;
+	font-size: 0.9rem;
+	color: var(--color-muted-foreground);
+}
