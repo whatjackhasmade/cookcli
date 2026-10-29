@@ -2,7 +2,6 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import type { AggregatedIngredient } from "@/utils";
-import { getRecipeSummaries } from "@/utils/server";
 import { loadShoppingList } from "../loadShoppingList";
 import { openOcado, pause } from "../ocado/browser";
 import { type OcadoSearchResult, searchProducts } from "../ocado/search";
@@ -11,6 +10,7 @@ import { planTrolley } from "../planTrolley";
 import { ocadoProducts } from "../products";
 import type { Amount, OcadoProduct } from "../types";
 import { ask, filterMenu, menu } from "./prompt";
+import { recipeMappingRows } from "./recipes";
 
 // `npm run ocado:map [-- "<recipes>"]` - walks the Unmapped ingredients for a
 // selection (or, with no argument, for recipes picked one at a time), searches Ocado for each, and writes the picked Product into the
@@ -136,26 +136,11 @@ async function mapSelection(
 	return "done";
 }
 
-// Titles may start with an emoji, which would otherwise sort first.
-function sortKey(title: string) {
-	return title.replace(/^[^\p{L}\p{N}]+/u, "");
-}
-
 // Lists every recipe with how many of its Ingredients still need mapping,
-// fewest-to-do last so the useful ones come first.
+// fully mapped ones last so the useful ones come first.
 async function pickRecipe(products: OcadoProduct[]): Promise<string | null> {
-	const summaries = await getRecipeSummaries();
-	const rows = await Promise.all(
-		summaries.map(async (summary) => {
-			const { shoppingList } = await loadShoppingList(summary.slug);
-			const { unmapped } = planTrolley(shoppingList, products);
-			return { summary, unmapped: unmapped.length, total: shoppingList.length };
-		}),
-	);
-	rows.sort(
-		(a, b) =>
-			Number(a.unmapped === 0) - Number(b.unmapped === 0) ||
-			sortKey(a.summary.title).localeCompare(sortKey(b.summary.title)),
+	const rows = (await recipeMappingRows(products)).toSorted(
+		(a, b) => Number(a.unmapped === 0) - Number(b.unmapped === 0),
 	);
 
 	console.log();

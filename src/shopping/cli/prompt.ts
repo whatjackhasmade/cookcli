@@ -225,17 +225,22 @@ export function menu(options: string[]): Promise<MenuChoice> {
 }
 
 const FILTER_LEGEND = "  type to filter · ↑/↓ move · enter pick · esc quit";
+const MULTI_LEGEND =
+	"  type to filter · ↑/↓ move · tab select · enter done · esc quit";
 const FILTER_VISIBLE = 12;
 
 // Arrow-key menu where typing narrows the options (case-insensitive
-// substring). Resolves the picked option's index in `options`, or null when
-// the user quits.
-export function filterMenu(
+// substring). With `multiple`, Tab toggles options and Enter confirms the
+// toggled set (or just the highlighted option if none are toggled).
+// Resolves indexes into `options`, or null when the user quits.
+function runFilterMenu(
 	title: string,
 	options: string[],
-): Promise<number | null> {
+	multiple: boolean,
+): Promise<number[] | null> {
 	return new Promise((resolve) => {
 		const screen = createScreen();
+		const chosen = new Set<number>();
 		let filter = "";
 		let selected = 0;
 
@@ -250,19 +255,26 @@ export function filterMenu(
 			const visible = matches();
 			const height = Math.min(FILTER_VISIBLE, screen.maxRows(4));
 			const start = windowStart(selected, visible.length, height);
-			const lines = [`${title} ${filter}\x1b[2m▏\x1b[0m`];
+			const count =
+				multiple && chosen.size > 0 ? `  (${chosen.size} selected)` : "";
+			const lines = [`${title} ${filter}\x1b[2m▏${count}\x1b[0m`];
 			if (visible.length === 0) {
 				lines.push("  No matches.");
 			}
-			for (const [i, { option }] of visible
+			for (const [i, { option, index }] of visible
 				.slice(start, start + height)
 				.entries()) {
-				lines.push(optionLine(option, start + i === selected));
+				const mark = multiple
+					? chosen.has(index)
+						? "\x1b[32m●\x1b[0m "
+						: "○ "
+					: "";
+				lines.push(optionLine(`${mark}${option}`, start + i === selected));
 			}
 			if (visible.length > height) {
 				lines.push(`\x1b[2m  ${visible.length} matches\x1b[0m`);
 			}
-			lines.push(`\x1b[2m${FILTER_LEGEND}\x1b[0m`);
+			lines.push(`\x1b[2m${multiple ? MULTI_LEGEND : FILTER_LEGEND}\x1b[0m`);
 			screen.draw(lines);
 		}
 
@@ -277,10 +289,21 @@ export function filterMenu(
 				selected = (selected - 1 + count) % Math.max(count, 1);
 			} else if (key.name === "down") {
 				selected = (selected + 1) % Math.max(count, 1);
-			} else if (key.name === "return") {
+			} else if (key.name === "tab" && multiple) {
 				const match = matches()[selected];
 				if (match) {
-					finish(match.index);
+					if (chosen.has(match.index)) {
+						chosen.delete(match.index);
+					} else {
+						chosen.add(match.index);
+					}
+				}
+			} else if (key.name === "return") {
+				const match = matches()[selected];
+				if (chosen.size > 0) {
+					finish(Array.from(chosen));
+				} else if (match) {
+					finish([match.index]);
 				}
 				return;
 			} else if (key.name === "backspace") {
@@ -299,14 +322,29 @@ export function filterMenu(
 			render();
 		});
 
-		function finish(index: number | null) {
+		function finish(indexes: number[] | null) {
 			stopListening();
 			screen.close();
-			resolve(index);
+			resolve(indexes);
 		}
 
 		render();
 	});
+}
+
+export async function filterMenu(
+	title: string,
+	options: string[],
+): Promise<number | null> {
+	const picked = await runFilterMenu(title, options, false);
+	return picked ? picked[0] : null;
+}
+
+export function filterMultiMenu(
+	title: string,
+	options: string[],
+): Promise<number[] | null> {
+	return runFilterMenu(title, options, true);
 }
 
 export type Approval = "add" | "skip" | "addAll";

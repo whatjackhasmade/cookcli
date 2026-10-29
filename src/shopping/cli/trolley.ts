@@ -12,14 +12,13 @@ import {
 	planTrolley,
 } from "../planTrolley";
 import { ocadoProducts } from "../products";
-import { approve } from "./prompt";
+import { approve, filterMultiMenu } from "./prompt";
+import { recipeMappingRows } from "./recipes";
 
-// `npm run ocado -- "<recipes>" [--pantry "salt,curry powder"] [--dry-run]`
+// `npm run ocado [-- "<recipes>"] [--pantry "salt,curry powder"] [--dry-run]`
+// (with no recipes, they're picked from a list)
 // - fills the Ocado Trolley with the Packs a selection of recipes needs.
 // Never books a slot or checks out; the browser is left open for review.
-const usage =
-	'Usage: npm run ocado -- "pad-thai:4,ragu:2" [--pantry "salt,curry powder"] [--dry-run]';
-
 function amountsText({ amounts }: AggregatedIngredient) {
 	return amounts
 		.map(({ quantity, units }) => `${quantity}${units ? ` ${units}` : ""}`)
@@ -110,6 +109,24 @@ function resultText(line: TrolleyProductLine, result: RunResult) {
 	}
 }
 
+// No recipes given: pick any number from a filterable list, at their
+// default servings.
+async function pickRecipes(): Promise<string | null> {
+	const rows = await recipeMappingRows(ocadoProducts);
+	console.log();
+	const picked = await filterMultiMenu(
+		"Recipes to shop for:",
+		rows.map(({ summary, unmapped, total }) =>
+			unmapped === 0
+				? `${summary.title}  \x1b[2m✓ all mapped\x1b[0m`
+				: `${summary.title}  \x1b[2m${unmapped}/${total} unmapped\x1b[0m`,
+		),
+	);
+	return picked
+		? picked.map((index) => rows[index].summary.slug).join(",")
+		: null;
+}
+
 async function main() {
 	const { values, positionals } = parseArgs({
 		allowPositionals: true,
@@ -119,10 +136,9 @@ async function main() {
 		},
 	});
 
-	const recipesParam = positionals[0];
+	const recipesParam = positionals[0] ?? (await pickRecipes());
 	if (!recipesParam) {
-		console.error(usage);
-		process.exit(1);
+		return;
 	}
 
 	const enabledPantry = new Set(parsePantryParam(values.pantry));

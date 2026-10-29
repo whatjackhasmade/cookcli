@@ -24,9 +24,10 @@ diverges from the upstream spec/conventions docs) before reviewing or writing
 - `npm run format` — `oxfmt`
 - `npm run fix` — format, then lint
 - `npm run test` — `vitest run`
-- `npm run ocado -- "<recipes>" [--pantry "a,b"] [--dry-run]` — local-only
+- `npm run ocado [-- "<recipes>"] [--pantry "a,b"] [--dry-run]` — local-only
   Playwright CLI that fills the Ocado Trolley for a `/shopping` selection;
-  `npm run ocado:map -- "<recipes>"` builds the Product mapping
+  `npm run ocado:map [-- "<recipes>"]` builds the Product mapping (both
+  offer a recipe picker when run without recipes)
   (`src/shopping/products.ts`). Everything for this lives in `src/shopping/`;
   terms are in `CONTEXT.md` ("Ocado shopping"). Login session is cached in
   the gitignored `.ocado/`; credentials are `OCADO_EMAIL`/`OCADO_PASSWORD`
