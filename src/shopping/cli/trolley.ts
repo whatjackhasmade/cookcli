@@ -1,3 +1,4 @@
+import readline from "node:readline/promises";
 import { parseArgs } from "node:util";
 import type { AggregatedIngredient } from "@/utils";
 import { loadShoppingList } from "../loadShoppingList";
@@ -144,7 +145,7 @@ async function main() {
 		}
 	}
 
-	const { page, saveSession } = await openOcado();
+	const { browser, page, saveSession } = await openOcado();
 	const { csrfToken } = await ensureLoggedIn(page);
 	await saveSession();
 
@@ -212,10 +213,21 @@ async function main() {
 	printPantryAndUnmapped(plan);
 
 	await saveSession();
-	console.log(
-		"\nReview the Trolley in the browser - close the window when you're done.",
-	);
-	await page.waitForEvent("close", { timeout: 0 });
+	console.log("\nReview the Trolley in the browser.");
+
+	// Whichever comes first: Enter in the terminal, or closing the window.
+	const rl = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout,
+	});
+	await Promise.race([
+		rl.question(
+			"Press Enter to close the browser (or just close the window)… ",
+		),
+		page.waitForEvent("close", { timeout: 0 }),
+	]);
+	rl.close();
+	await browser.close();
 }
 
 main().catch((error) => {
