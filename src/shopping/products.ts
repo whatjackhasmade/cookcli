@@ -82,7 +82,7 @@ export const ocadoProducts: OcadoProduct[] = [
 			quantity: 30,
 			unit: "g",
 		},
-		ingredients: ["coriander leaves"],
+		ingredients: ["coriander leaves", "cilantro"],
 	},
 	{
 		retailerProductId: "363266011",
@@ -162,7 +162,7 @@ export const ocadoProducts: OcadoProduct[] = [
 			quantity: 1,
 			unit: "l",
 		},
-		ingredients: ["oil"],
+		ingredients: ["oil", "olive oil"],
 	},
 	{
 		retailerProductId: "693660011",
@@ -192,7 +192,7 @@ export const ocadoProducts: OcadoProduct[] = [
 			quantity: 100,
 			unit: "g",
 		},
-		ingredients: ["red chilli powder"],
+		ingredients: ["red chilli powder", "chilli powder"],
 	},
 	{
 		retailerProductId: "367188011",
@@ -263,5 +263,155 @@ export const ocadoProducts: OcadoProduct[] = [
 			unit: "kg",
 		},
 		ingredients: ["plain flour"],
+	},
+	{
+		retailerProductId: "294493011",
+		productId: "097e9222-1639-4c59-959b-514b3d2f6acc",
+		name: "Mutti Polpa Finely Chopped Italian Tomatoes",
+		packSize: {
+			quantity: 400,
+			unit: "g",
+		},
+		ingredients: ["canned tomatoes"],
+	},
+	{
+		retailerProductId: "630196011",
+		productId: "2e9f40ae-c88a-4c3f-af5c-69ffb9ff6b09",
+		name: "Ocado Mild Cheddar",
+		packSize: {
+			quantity: 400,
+			unit: "g",
+		},
+		ingredients: ["cheese"],
+	},
+	{
+		retailerProductId: "508936011",
+		productId: "82c0e28f-4d9e-4984-914c-18459711f400",
+		name: "M&S Lightly Salted Tortilla Chips",
+		packSize: {
+			quantity: 200,
+			unit: "g",
+		},
+		ingredients: ["crushed tortilla chips"],
+	},
+	{
+		retailerProductId: "269592011",
+		productId: "abec9566-d8be-4a35-bcbd-d184f3f38cec",
+		name: "Ocado Ground Cumin",
+		packSize: {
+			quantity: 41,
+			unit: "g",
+		},
+		ingredients: ["cumin"],
+	},
+	{
+		retailerProductId: "260561011",
+		productId: "632b4c7f-2340-4240-96cf-ace32850357f",
+		name: "East End Brown Lentils",
+		packSize: {
+			quantity: 1,
+			unit: "kg",
+		},
+		ingredients: ["dried lentils (green, brown, or black)"],
+	},
+	{
+		retailerProductId: "632381011",
+		productId: "9ce8d383-91f5-43e5-9ea6-42417b4893b0",
+		name: "M&S Onion Granules",
+		packSize: {
+			quantity: 60,
+			unit: "g",
+		},
+		ingredients: ["granulated onion"],
+	},
+	{
+		retailerProductId: "421565011",
+		productId: "f6d63fef-1ed5-47c1-ad75-5a88275455eb",
+		name: "Santa Maria Red Jalapenos",
+		packSize: {
+			quantity: 200,
+			unit: "g",
+		},
+		ingredients: ["jalapenos"],
+	},
+	{
+		retailerProductId: "579679011",
+		productId: "21268455-ebc2-4af8-b72a-c8d5cd960a4f",
+		name: "Ocado Little Gem Lettuce",
+		packSize: {
+			quantity: 2,
+			unit: "item",
+		},
+		ingredients: ["lettuce"],
+	},
+	{
+		retailerProductId: "550626011",
+		productId: "d9bfa1ac-0e4c-4116-862f-5be180daaa27",
+		name: "Ocado Limes Twin Pack",
+		packSize: {
+			quantity: 2,
+			unit: "item",
+		},
+		ingredients: ["limes"],
+	},
+	{
+		retailerProductId: "44857011",
+		productId: "2494d7b5-bedb-4fb2-a506-8c5ad442cd5a",
+		name: "Ocado Brown Onions",
+		packSize: {
+			quantity: 1,
+			unit: "kg",
+		},
+		ingredients: ["onion"],
+	},
+	{
+		retailerProductId: "54449011",
+		productId: "627cb542-b794-4710-9ebf-e46bf0a1e7ba",
+		name: "Ocado Red Onions",
+		packSize: {
+			quantity: 1,
+			unit: "kg",
+		},
+		ingredients: ["red onion"],
+	},
+	{
+		retailerProductId: "81851011",
+		productId: "e7e979e6-2a14-49ed-914e-41c86320893c",
+		name: "Ocado Shallots",
+		packSize: {
+			quantity: 400,
+			unit: "g",
+		},
+		ingredients: ["shallots"],
+	},
+	{
+		retailerProductId: "505774011",
+		productId: "bb0a6dfc-3c39-4456-99e8-5feb6cb7daf0",
+		name: "M&S Sour Cream & Chive Dip",
+		packSize: {
+			quantity: 230,
+			unit: "g",
+		},
+		ingredients: ["sour cream (with chives)"],
+	},
+	{
+		retailerProductId: "76609011",
+		productId: "d590b582-0bda-4833-b4df-4c72979976bf",
+		name: "Isle of Wight Cherry on the Vine Tomatoes",
+		packSize: {
+			quantity: 500,
+			unit: "g",
+		},
+		ingredients: ["tomatoes"],
+	},
+	{
+		retailerProductId: "421561011",
+		productId: "84446207-0d92-4df1-9620-a441fd7f2f64",
+		name: "Santa Maria Plain Flour Tortilla",
+		packSize: {
+			quantity: 8,
+			unit: "item",
+		},
+		ingredients: ["tortilla"],
 	},
 ];
