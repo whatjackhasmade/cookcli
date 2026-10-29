@@ -58,3 +58,6 @@ src/utils/server/recipeIndex.generated.ts
 
 # local planning docs
 /docs
+
+# ocado trolley session + spike output
+/.ocado

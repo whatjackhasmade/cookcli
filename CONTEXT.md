@@ -63,3 +63,36 @@ Three separate phases, not a file-by-file rewrite:
 Test-writing (vitest) for the new hand-rolled logic is an explicitly
 separate track, not part of this migration. (Vitest itself and the
 existing `modifyIngredientQuantity` test predate this effort.)
+
+## Ocado shopping
+
+Turning a shopping list into a filled Ocado trolley. Terms follow Ocado's own
+vocabulary; variants you might say are listed under _Avoid_.
+
+**Trolley**:
+The Ocado basket that Products are added to before checkout.
+_Avoid_: Cart, basket
+
+**Product**:
+A single item Ocado sells, identified by its Ocado product ID.
+_Avoid_: SKU, item, listing
+
+**Pack**:
+One purchasable unit of a Product; the Trolley holds a whole number of Packs.
+_Avoid_: Unit, tin, bag (when meaning the generic count)
+
+**Pack size**:
+The quantity of an Ingredient contained in one Pack, e.g. 400g for a tin of chickpeas.
+
+**Product mapping**:
+The link from one or more Ingredient names to the Product that supplies them.
+
+**Pantry item**:
+A Product normally already at home (salt, spices, oil) and left out of the Trolley unless explicitly toggled on.
+_Avoid_: Staple, cupboard item
+
+**Unmapped ingredient**:
+An Ingredient on the shopping list with no Product mapping, so it cannot be added to the Trolley.
+
+**Check quantity**:
+A flag on a Product whose Pack count couldn't be calculated (non-numeric amount or unconvertible unit), so one Pack is added for the user to review.
