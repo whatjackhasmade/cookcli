@@ -14,7 +14,8 @@
 		"postinstall": "npx tsx scripts/patchCooklangWasm.ts",
 		"recipes": "npx tsx scripts/generateRecipeData.ts",
 		"start": "next start",
-		"test": "vitest run"
+		"test": "vitest run",
+		"ocado:map": "tsx src/shopping/cli/map.ts"
 	},
 	"dependencies": {
 		"next": "16.4.3",
