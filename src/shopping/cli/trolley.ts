@@ -121,10 +121,14 @@ async function main() {
 		return;
 	}
 
-	try {
-		process.loadEnvFile(".env.local");
-	} catch {
-		// No .env.local - login falls back to the manual wait.
+	// Credentials may live in either file; neither has to exist, in which
+	// case login falls back to the manual wait.
+	for (const envFile of [".env.local", ".env"]) {
+		try {
+			process.loadEnvFile(envFile);
+		} catch {
+			// Missing file - try the next one.
+		}
 	}
 
 	const { page, saveSession } = await openOcado();

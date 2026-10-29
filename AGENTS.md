@@ -30,7 +30,7 @@ diverges from the upstream spec/conventions docs) before reviewing or writing
   (`src/shopping/products.ts`). Everything for this lives in `src/shopping/`;
   terms are in `CONTEXT.md` ("Ocado shopping"). Login session is cached in
   the gitignored `.ocado/`; credentials are `OCADO_EMAIL`/`OCADO_PASSWORD`
-  in `.env.local`.
+  in `.env` or `.env.local`.
 - Node version is pinned in `.nvmrc` (v22.13.0)
 
 Linting is oxlint (`.oxlintrc.json`) and formatting is oxfmt (`.oxfmtrc.json`),
