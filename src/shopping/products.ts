@@ -82,7 +82,7 @@ export const ocadoProducts: OcadoProduct[] = [
 			quantity: 30,
 			unit: "g",
 		},
-		ingredients: ["coriander leaves", "cilantro"],
+		ingredients: ["coriander", "coriander leaves", "cilantro"],
 	},
 	{
 		retailerProductId: "363266011",
