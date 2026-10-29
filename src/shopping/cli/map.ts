@@ -158,8 +158,9 @@ async function pickRecipe(products: OcadoProduct[]): Promise<string | null> {
 			sortKey(a.summary.title).localeCompare(sortKey(b.summary.title)),
 	);
 
+	console.log();
 	const index = await filterMenu(
-		"\nRecipe to map:",
+		"Recipe to map:",
 		rows.map(({ summary, unmapped, total }) =>
 			unmapped === 0
 				? `${summary.title}  \x1b[2m✓ all ${total} mapped\x1b[0m`

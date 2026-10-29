@@ -19,6 +19,134 @@ export async function ask(question: string, prefill = ""): Promise<string> {
 	}
 }
 
+// Length of the ANSI escape sequence (colour, cursor) at the start of
+// `text`, or 0 if it doesn't start with one.
+function escapeLength(text: string): number {
+	if (!text.startsWith("\x1b[")) {
+		return 0;
+	}
+	for (let i = 2; i < text.length; i++) {
+		if (/[A-Za-z]/.test(text[i])) {
+			return i + 1;
+		}
+	}
+	return text.length;
+}
+
+// Terminal columns a code point takes: 0 for joiners/variation selectors and
+// combining marks, 2 for emoji and East Asian wide characters, else 1.
+function codePointWidth(codePoint: number): number {
+	if (
+		codePoint === 0x200d ||
+		(codePoint >= 0xfe00 && codePoint <= 0xfe0f) ||
+		(codePoint >= 0x0300 && codePoint <= 0x036f)
+	) {
+		return 0;
+	}
+	if (
+		(codePoint >= 0x1100 && codePoint <= 0x115f) ||
+		(codePoint >= 0x2e80 && codePoint <= 0xa4cf) ||
+		(codePoint >= 0xac00 && codePoint <= 0xd7a3) ||
+		(codePoint >= 0xf900 && codePoint <= 0xfaff) ||
+		(codePoint >= 0xff00 && codePoint <= 0xff60) ||
+		codePoint >= 0x1f000
+	) {
+		return 2;
+	}
+	return 1;
+}
+
+// Clips a line to `width` columns so it never wraps - the redraw below moves
+// the cursor up one row per line, which only works if a line is one row.
+function fitToWidth(line: string, width: number): string {
+	let out = "";
+	let used = 0;
+	let rest = line;
+
+	while (rest.length > 0) {
+		const escape = escapeLength(rest);
+		if (escape > 0) {
+			out += rest.slice(0, escape);
+			rest = rest.slice(escape);
+			continue;
+		}
+		const char = String.fromCodePoint(rest.codePointAt(0) ?? 0);
+		const charWidth = codePointWidth(char.codePointAt(0) ?? 0);
+		if (used + charWidth > width - 1 && rest.length > char.length) {
+			return `${out}…\x1b[0m`;
+		}
+		out += char;
+		used += charWidth;
+		rest = rest.slice(char.length);
+	}
+
+	return out;
+}
+
+const showCursor = () => process.stdout.write("\x1b[?25h");
+
+// Redraws a block of lines in place: each draw moves back up over the
+// previous one and clears it, so the menu stays put instead of scrolling.
+function createScreen() {
+	let rows = 0;
+	process.stdout.write("\x1b[?25l");
+	process.once("exit", showCursor);
+
+	return {
+		// Rows available for a list, leaving room for the surrounding lines.
+		maxRows: (reserved: number) =>
+			Math.max(3, (process.stdout.rows ?? 24) - reserved),
+		draw(lines: string[]) {
+			const width = Math.max(20, process.stdout.columns ?? 80);
+			const fitted = lines.map((line) =>
+				fitToWidth(line.replaceAll("\n", " "), width),
+			);
+			const up = rows > 0 ? `\x1b[${rows}A` : "";
+			process.stdout.write(`${up}\r\x1b[J${fitted.join("\n")}\n`);
+			rows = fitted.length;
+		},
+		close() {
+			showCursor();
+			process.off("exit", showCursor);
+		},
+	};
+}
+
+// Keeps the selected row inside a fixed-height window over a long list.
+function windowStart(selected: number, total: number, height: number) {
+	return Math.min(
+		Math.max(0, selected - height + 1),
+		Math.max(0, total - height),
+	);
+}
+
+function optionLine(option: string, isSelected: boolean) {
+	return isSelected ? `\x1b[36m› ${option}\x1b[0m` : `  ${option}`;
+}
+
+function listenForKeys(
+	onKeypress: (
+		sequence: string | undefined,
+		key: { name?: string; ctrl?: boolean; meta?: boolean },
+	) => void,
+) {
+	const handler = (
+		sequence: string | undefined,
+		key: { name?: string; ctrl?: boolean; meta?: boolean } = {},
+	) => onKeypress(sequence, key);
+
+	readline.emitKeypressEvents(process.stdin);
+	process.stdin.setRawMode(true);
+	process.stdin.resume();
+	process.stdin.on("keypress", handler);
+
+	return () => {
+		process.stdin.off("keypress", handler);
+		process.stdin.setRawMode(false);
+		process.stdin.pause();
+	};
+}
+
 export type MenuChoice =
 	| { action: "pick"; index: number; pantry: boolean }
 	| { action: "search" }
@@ -32,47 +160,35 @@ const LEGEND =
 // are available.
 export function menu(options: string[]): Promise<MenuChoice> {
 	return new Promise((resolve) => {
+		const screen = createScreen();
 		let selected = 0;
-		let renderedLines = 0;
 
 		function render() {
-			if (renderedLines > 0) {
-				process.stdout.write(`\x1b[${renderedLines}A\x1b[J`);
-			}
+			const height = screen.maxRows(2);
+			const start = windowStart(selected, options.length, height);
 			const lines = options.length
-				? options.map((option, i) =>
-						i === selected ? `\x1b[36m› ${option}\x1b[0m` : `  ${option}`,
-					)
+				? options
+						.slice(start, start + height)
+						.map((option, i) => optionLine(option, start + i === selected))
 				: ["  No results."];
 			lines.push(`\x1b[2m${LEGEND}\x1b[0m`);
-			process.stdout.write(`${lines.join("\n")}\n`);
-			renderedLines = lines.length;
+			screen.draw(lines);
 		}
 
-		function finish(choice: MenuChoice) {
-			process.stdin.off("keypress", onKeypress);
-			process.stdin.setRawMode(false);
-			process.stdin.pause();
-			resolve(choice);
-		}
-
-		function onKeypress(
-			sequence: string | undefined,
-			key: { name?: string; ctrl?: boolean } = {},
-		) {
+		const stopListening = listenForKeys((sequence, key) => {
 			if (key.ctrl && key.name === "c") {
 				finish({ action: "quit" });
 				return;
 			}
 
+			const count = Math.max(options.length, 1);
 			switch (key.name ?? sequence) {
 				case "up":
-					selected =
-						(selected - 1 + options.length) % Math.max(options.length, 1);
+					selected = (selected - 1 + count) % count;
 					render();
 					return;
 				case "down":
-					selected = (selected + 1) % Math.max(options.length, 1);
+					selected = (selected + 1) % count;
 					render();
 					return;
 				case "return":
@@ -96,12 +212,14 @@ export function menu(options: string[]): Promise<MenuChoice> {
 				case "escape":
 					finish({ action: "quit" });
 			}
+		});
+
+		function finish(choice: MenuChoice) {
+			stopListening();
+			screen.close();
+			resolve(choice);
 		}
 
-		readline.emitKeypressEvents(process.stdin);
-		process.stdin.setRawMode(true);
-		process.stdin.resume();
-		process.stdin.on("keypress", onKeypress);
 		render();
 	});
 }
@@ -117,9 +235,9 @@ export function filterMenu(
 	options: string[],
 ): Promise<number | null> {
 	return new Promise((resolve) => {
+		const screen = createScreen();
 		let filter = "";
 		let selected = 0;
-		let renderedLines = 0;
 
 		function matches() {
 			const needle = filter.toLowerCase();
@@ -129,45 +247,26 @@ export function filterMenu(
 		}
 
 		function render() {
-			if (renderedLines > 0) {
-				process.stdout.write(`\x1b[${renderedLines}A\x1b[J`);
-			}
 			const visible = matches();
-			// Keep the selection on screen by scrolling a fixed-height window.
-			const start = Math.min(
-				Math.max(0, selected - FILTER_VISIBLE + 1),
-				Math.max(0, visible.length - FILTER_VISIBLE),
-			);
+			const height = Math.min(FILTER_VISIBLE, screen.maxRows(4));
+			const start = windowStart(selected, visible.length, height);
 			const lines = [`${title} ${filter}\x1b[2m▏\x1b[0m`];
 			if (visible.length === 0) {
 				lines.push("  No matches.");
 			}
 			for (const [i, { option }] of visible
-				.slice(start, start + FILTER_VISIBLE)
+				.slice(start, start + height)
 				.entries()) {
-				lines.push(
-					start + i === selected ? `\x1b[36m› ${option}\x1b[0m` : `  ${option}`,
-				);
+				lines.push(optionLine(option, start + i === selected));
 			}
-			if (visible.length > FILTER_VISIBLE) {
+			if (visible.length > height) {
 				lines.push(`\x1b[2m  ${visible.length} matches\x1b[0m`);
 			}
 			lines.push(`\x1b[2m${FILTER_LEGEND}\x1b[0m`);
-			process.stdout.write(`${lines.join("\n")}\n`);
-			renderedLines = lines.length;
+			screen.draw(lines);
 		}
 
-		function finish(index: number | null) {
-			process.stdin.off("keypress", onKeypress);
-			process.stdin.setRawMode(false);
-			process.stdin.pause();
-			resolve(index);
-		}
-
-		function onKeypress(
-			sequence: string | undefined,
-			key: { name?: string; ctrl?: boolean; meta?: boolean } = {},
-		) {
+		const stopListening = listenForKeys((sequence, key) => {
 			const count = matches().length;
 
 			if ((key.ctrl && key.name === "c") || key.name === "escape") {
@@ -198,12 +297,14 @@ export function filterMenu(
 				selected = 0;
 			}
 			render();
+		});
+
+		function finish(index: number | null) {
+			stopListening();
+			screen.close();
+			resolve(index);
 		}
 
-		readline.emitKeypressEvents(process.stdin);
-		process.stdin.setRawMode(true);
-		process.stdin.resume();
-		process.stdin.on("keypress", onKeypress);
 		render();
 	});
 }
