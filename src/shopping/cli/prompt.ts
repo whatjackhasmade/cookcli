@@ -308,3 +308,42 @@ export function filterMenu(
 		render();
 	});
 }
+
+export type Approval = "add" | "skip" | "addAll";
+
+const APPROVAL_KEYS: Record<string, Approval> = {
+	return: "add",
+	right: "add",
+	y: "add",
+	left: "skip",
+	backspace: "skip",
+	n: "skip",
+	a: "addAll",
+};
+
+// Single keypress approval, with keys under either hand: Enter / → / y to
+// add, ← / Backspace / n to skip, a to add everything left. Ctrl+C exits.
+export function approve(question: string): Promise<Approval> {
+	return new Promise((resolve) => {
+		process.stdout.write(
+			`${question} \x1b[2m[enter/→ add · ←/n skip · a add all]\x1b[0m `,
+		);
+
+		const stopListening = listenForKeys((sequence, key) => {
+			if (key.ctrl && key.name === "c") {
+				stopListening();
+				process.stdout.write("\n");
+				process.exit(130);
+			}
+			const approval =
+				APPROVAL_KEYS[(key.name ?? sequence ?? "").toLowerCase()];
+			if (approval) {
+				stopListening();
+				process.stdout.write(
+					`${approval === "skip" ? "skip" : approval === "addAll" ? "add all" : "add"}\n`,
+				);
+				resolve(approval);
+			}
+		});
+	});
+}

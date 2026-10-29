@@ -12,6 +12,7 @@ import {
 	planTrolley,
 } from "../planTrolley";
 import { ocadoProducts } from "../products";
+import { approve } from "./prompt";
 
 // `npm run ocado -- "<recipes>" [--pantry "salt,curry powder"] [--dry-run]`
 // - fills the Ocado Trolley with the Packs a selection of recipes needs.
@@ -79,20 +80,27 @@ function shuffle<T>(items: T[]): T[] {
 }
 
 // Green: Packs added. Amber: the Trolley already had enough. Red: not
-// added. Plain text when output isn't a terminal or NO_COLOR is set.
+// added. Dim: skipped by the user. Plain text when output isn't a terminal or NO_COLOR is set.
 const useColour = process.stdout.isTTY && !process.env.NO_COLOR;
-const OUTCOME_COLOURS: Record<EnsureResult["outcome"], string> = {
+// A run's outcome per Product: the Trolley's, or the user declining to add
+// a Product the Trolley didn't have at all.
+type RunResult = EnsureResult | { outcome: "skipped" };
+
+const OUTCOME_COLOURS: Record<RunResult["outcome"], string> = {
 	added: "32",
 	already: "33",
 	failed: "31",
+	skipped: "2",
 };
 
 function colour(code: string, text: string) {
 	return useColour ? `\x1b[${code}m${text}\x1b[0m` : text;
 }
 
-function resultText(line: TrolleyProductLine, result: EnsureResult) {
+function resultText(line: TrolleyProductLine, result: RunResult) {
 	switch (result.outcome) {
+		case "skipped":
+			return `${line.product.name}: skipped`;
 		case "added":
 			return `${line.product.name}: ${result.from} → ${result.to}`;
 		case "already":
@@ -150,14 +158,36 @@ async function main() {
 	await saveSession();
 
 	const trolley = await getTrolley(page);
-	const outcomes: Array<{ line: TrolleyProductLine; result: EnsureResult }> =
-		[];
+	const outcomes: Array<{ line: TrolleyProductLine; result: RunResult }> = [];
 
 	const queue = shuffle(plan.products);
+	let addAll = false;
 	for (const [index, line] of queue.entries()) {
 		const progress = `[${index + 1}/${queue.length}]`;
-		const needsChange = (trolley.get(line.product.productId) ?? 0) < line.packs;
-		if (needsChange) {
+		const current = trolley.get(line.product.productId) ?? 0;
+		const left = queue.length - index - 1;
+		const remaining = left === 0 ? "done" : `${left} left`;
+
+		// A Product missing from the Trolley entirely is confirmed first, so
+		// a run never adds something the user already has at home.
+		if (current === 0 && !addAll) {
+			const approval = await approve(
+				`${progress} Add ${lineText(line)}${line.checkQuantity ? " [check quantity]" : ""}?`,
+			);
+			addAll = approval === "addAll";
+			if (approval === "skip") {
+				outcomes.push({ line, result: { outcome: "skipped" } });
+				console.log(
+					colour(
+						OUTCOME_COLOURS.skipped,
+						`${progress} ${line.product.name}: skipped — ${remaining}`,
+					),
+				);
+				continue;
+			}
+		}
+
+		if (current < line.packs) {
 			console.log(
 				colour("2", `${progress} Adding ${line.product.name} × ${line.packs}…`),
 			);
@@ -185,17 +215,16 @@ async function main() {
 				},
 			});
 		}
-		const left = queue.length - index - 1;
 		const { result } = outcomes.at(-1)!;
 		console.log(
 			colour(
 				OUTCOME_COLOURS[result.outcome],
-				`${progress} ${resultText(line, result)} — ${left === 0 ? "done" : `${left} left`}`,
+				`${progress} ${resultText(line, result)} — ${remaining}`,
 			),
 		);
 	}
 
-	const byOutcome = (outcome: EnsureResult["outcome"]) =>
+	const byOutcome = (outcome: RunResult["outcome"]) =>
 		outcomes
 			.filter(({ result }) => result.outcome === outcome)
 			.map(({ line, result }) =>
@@ -206,6 +235,7 @@ async function main() {
 	printSection("Added", byOutcome("added"));
 	printSection("Already in the Trolley", byOutcome("already"));
 	printSection("Unavailable or not added", byOutcome("failed"));
+	printSection("Skipped by you", byOutcome("skipped"));
 	printSection(
 		"Check quantity (couldn't calculate Packs - 1 added)",
 		plan.products.filter(({ checkQuantity }) => checkQuantity).map(lineText),
