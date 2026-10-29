@@ -272,7 +272,7 @@ export const ocadoProducts: OcadoProduct[] = [
 			quantity: 400,
 			unit: "g",
 		},
-		ingredients: ["canned tomatoes"],
+		ingredients: ["canned tomatoes", "canned chopped tomatoes"],
 	},
 	{
 		retailerProductId: "630196011",
@@ -413,5 +413,85 @@ export const ocadoProducts: OcadoProduct[] = [
 			unit: "item",
 		},
 		ingredients: ["tortilla"],
+	},
+	{
+		retailerProductId: "701927011",
+		productId: "05cdbfde-093a-4359-b6dc-184194905fb5",
+		name: "Cooks&Co Capers",
+		packSize: {
+			quantity: 198,
+			unit: "g",
+		},
+		ingredients: ["caper brine", "capers"],
+	},
+	{
+		retailerProductId: "562779011",
+		productId: "8de456a1-5724-42cd-8094-2ca3282e35a9",
+		name: "Ocado Extra Large Cauliflower",
+		packSize: {
+			quantity: 1,
+			unit: "item",
+		},
+		ingredients: ["cauliflower head"],
+	},
+	{
+		retailerProductId: "635210011",
+		productId: "7bad13ae-928c-4055-9572-30706969753e",
+		name: "Merchant Gourmet Dried Puy Lentils",
+		packSize: {
+			quantity: 300,
+			unit: "g",
+		},
+		ingredients: ["cooked Puy lentils"],
+	},
+	{
+		retailerProductId: "82801011",
+		productId: "e87ab377-31a5-423a-ba0e-695b23b0be97",
+		name: "Ocado Flat Leaf Parsley",
+		packSize: {
+			quantity: 30,
+			unit: "g",
+		},
+		ingredients: ["fresh parsley"],
+	},
+	{
+		retailerProductId: "531405011",
+		productId: "41a48283-8996-496e-892e-9307d295fefa",
+		name: "Fragata Pitted Black Olives",
+		packSize: {
+			quantity: 440,
+			unit: "g",
+		},
+		ingredients: ["Kalamata olives", "olive brine"],
+	},
+	{
+		retailerProductId: "269462011",
+		productId: "c25c7ffe-268d-42fe-b6fe-1aa1ff8134c1",
+		name: "Biofair Organic Fair Trade Quinoa Tricolore",
+		packSize: {
+			quantity: 500,
+			unit: "g",
+		},
+		ingredients: ["quinoa"],
+	},
+	{
+		retailerProductId: "81359011",
+		productId: "8eee348c-d3f6-40af-8ffb-e44a4f7868b6",
+		name: "Brindisa La Chinata Sweet Smoked Paprika D.O.P",
+		packSize: {
+			quantity: 70,
+			unit: "g",
+		},
+		ingredients: ["smoked paprika"],
+	},
+	{
+		retailerProductId: "13079011",
+		productId: "f9fe5ec6-3e3e-46a4-bc0a-c2c60c00d579",
+		name: "Marigold Health Foods Organic Swiss Vegetable Vegan Bouillon Powder",
+		packSize: {
+			quantity: 150,
+			unit: "g",
+		},
+		ingredients: ["stock cube"],
 	},
 ];
