@@ -139,9 +139,12 @@ async function main() {
 	const outcomes: Array<{ line: TrolleyProductLine; result: EnsureResult }> =
 		[];
 
-	for (const line of shuffle(plan.products)) {
+	const queue = shuffle(plan.products);
+	for (const [index, line] of queue.entries()) {
+		const progress = `[${index + 1}/${queue.length}]`;
 		const needsChange = (trolley.get(line.product.productId) ?? 0) < line.packs;
 		if (needsChange) {
+			console.log(`${progress} Adding ${line.product.name} × ${line.packs}…`);
 			await pause();
 		}
 		try {
@@ -164,7 +167,10 @@ async function main() {
 				},
 			});
 		}
-		console.log(resultText(line, outcomes.at(-1)!.result));
+		const left = queue.length - index - 1;
+		console.log(
+			`${progress} ${resultText(line, outcomes.at(-1)!.result)} — ${left === 0 ? "done" : `${left} left`}`,
+		);
 	}
 
 	const byOutcome = (outcome: EnsureResult["outcome"]) =>
