@@ -4,6 +4,9 @@ import type { RecipeSummary } from "@/utils/server";
 import { getRecipeSummaries } from "@/utils/server";
 import styles from "./page.module.css";
 
+// Indulgent categories start collapsed so the healthier ones lead the page.
+const COLLAPSED_CATEGORIES = new Set(["baking", "treat"]);
+
 async function getFormattedData() {
 	const summaries = await getRecipeSummaries();
 
@@ -33,12 +36,14 @@ export default async function Home() {
 
 	return (
 		<div className={styles.list}>
-			{Object.entries(categories).map(([category, value]) => (
-				<section key={category}>
+			{Object.entries(categories).map(([category, value]) => {
+				const title = (
 					<h2 className={styles.categoryTitle}>
 						{/* Uppercase first letter */}
 						{category.charAt(0).toUpperCase() + category.slice(1)}
 					</h2>
+				);
+				const list = (
 					<ul className={styles.recipeList}>
 						{value.map((recipe) => (
 							<li className={styles.recipeItem} key={recipe.path}>
@@ -48,8 +53,27 @@ export default async function Home() {
 							</li>
 						))}
 					</ul>
-				</section>
-			))}
+				);
+
+				if (COLLAPSED_CATEGORIES.has(category)) {
+					return (
+						<details className={styles.collapsible} key={category}>
+							<summary className={styles.summary}>
+								{title}
+								<span className={styles.count}>{value.length}</span>
+							</summary>
+							{list}
+						</details>
+					);
+				}
+
+				return (
+					<section key={category}>
+						{title}
+						{list}
+					</section>
+				);
+			})}
 		</div>
 	);
 }

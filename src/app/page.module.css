@@ -36,3 +36,35 @@
 .recipeLink:hover {
 	background: var(--surface-hover);
 }
+
+.summary {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5rem;
+	cursor: pointer;
+	list-style: none;
+}
+
+.summary::-webkit-details-marker {
+	display: none;
+}
+
+.summary::before {
+	content: "▸";
+	font-size: 0.75rem;
+	color: var(--color-muted-foreground);
+	transition: transform 0.15s ease;
+}
+
+.collapsible[open] > .summary::before {
+	transform: rotate(90deg);
+}
+
+.collapsible:not([open]) .categoryTitle {
+	margin-bottom: 0;
+}
+
+.count {
+	font-size: 0.75rem;
+	color: var(--color-muted-foreground);
+}
