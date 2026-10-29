@@ -27,14 +27,17 @@ if (original.includes(marker)) {
 }
 
 const expected = 'import * as wasm from "./cooklang_wasm_bg.wasm";';
-if (!original.startsWith(expected)) {
+// Checked with includes() rather than startsWith() — since 0.19 the file
+// opens with a `@ts-self-types` comment before the import.
+if (!original.includes(expected)) {
 	throw new Error(
-		`patchCooklangWasm: ${target} no longer starts with the expected wasm import. ` +
+		`patchCooklangWasm: ${target} no longer contains the expected wasm import. ` +
 			"The @cooklang/cooklang version may have changed its wasm loading — review this patch.",
 	);
 }
 
-const patched = `// Patched by scripts/patchCooklangWasm.ts — manual WebAssembly.instantiate
+const patched = `/* @ts-self-types="./cooklang_wasm.d.ts" */
+// Patched by scripts/patchCooklangWasm.ts — manual WebAssembly.instantiate
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
