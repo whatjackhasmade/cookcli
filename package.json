@@ -15,7 +15,8 @@
 		"recipes": "npx tsx scripts/generateRecipeData.ts",
 		"start": "next start",
 		"test": "vitest run",
-		"ocado:map": "tsx src/shopping/cli/map.ts"
+		"ocado:map": "tsx src/shopping/cli/map.ts",
+		"ocado": "tsx src/shopping/cli/trolley.ts"
 	},
 	"dependencies": {
 		"next": "16.4.3",

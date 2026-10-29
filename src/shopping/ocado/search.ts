@@ -1,5 +1,6 @@
 import type { Page } from "playwright";
 import { OCADO_ORIGIN } from "./browser";
+import { readInitialState } from "./state";
 
 export interface OcadoSearchResult {
 	productId: string;
@@ -24,10 +25,8 @@ interface ProductGroup {
 	products: string[];
 }
 
-const STATE_GLOBAL = "__INITIAL_STATE__";
-
-// Search results are server-rendered into `window.__INITIAL_STATE__` rather
-// than fetched from an API, so they're read from there. "featured" groups
+// Search results are server-rendered into the page state rather than
+// fetched from an API, so they're read from there. "featured" groups
 // are adverts and are skipped.
 export async function searchProducts(
 	page: Page,
@@ -35,26 +34,7 @@ export async function searchProducts(
 	limit = 8,
 ): Promise<OcadoSearchResult[]> {
 	await page.goto(`${OCADO_ORIGIN}/search?q=${encodeURIComponent(term)}`);
-	// The first response can be an AWS WAF interstitial that reloads into
-	// the real page, so wait for the state script rather than for "load".
-	// The app may clear the global once hydrated, so the script is re-run
-	// against a stand-in `window` to read the state as it was rendered.
-	const stateHandle = await page.waitForFunction(
-		(marker) => {
-			const script = Array.from(document.scripts).find(({ text }) =>
-				text.includes(marker),
-			);
-			if (!script) {
-				return null;
-			}
-			const stateWindow: Record<string, unknown> = {};
-			new Function("window", script.text)(stateWindow);
-			return stateWindow[marker];
-		},
-		STATE_GLOBAL,
-		{ timeout: 30_000 },
-	);
-	const { groups, entities } = await stateHandle.evaluate((state) => {
+	const { groups, entities } = await readInitialState(page, (state) => {
 		const { data } = state as {
 			data: {
 				search: { catalogue: { data: { productGroups?: unknown[] } } };
@@ -67,7 +47,6 @@ export async function searchProducts(
 			entities: data.products.productEntities,
 		};
 	});
-	await stateHandle.dispose();
 
 	const productIds = new Set(
 		(groups as ProductGroup[])
