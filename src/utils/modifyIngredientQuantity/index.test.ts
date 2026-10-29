@@ -1,5 +1,5 @@
-import type { FlatIngredientItem } from "@/utils/server";
 import { describe, expect, it } from "vitest";
+import type { FlatIngredientItem } from "@/utils/server";
 import { modifyIngredientQuantity } from "./index";
 
 function ingredient(

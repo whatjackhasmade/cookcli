@@ -156,8 +156,6 @@ function removeOrphanedOutputs(sources: string[]) {
 	console.log(
 		`optimizeRecipeImages: processed ${processed.length}, skipped ${
 			results.length - processed.length
-		} (up to date)${
-			processed.length > 0 ? `, saved ${(savedBytes / 1024).toFixed(0)}KB` : ""
-		}`,
+		} (up to date)${processed.length > 0 ? `, saved ${(savedBytes / 1024).toFixed(0)}KB` : ""}`,
 	);
 })();

@@ -1,0 +1,28 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": [
+		"typescript",
+		"unicorn",
+		"oxc",
+		"react",
+		"jsx-a11y",
+		"nextjs",
+		"import",
+		"vitest"
+	],
+	"categories": {
+		"correctness": "error",
+		"suspicious": "warn"
+	},
+	"env": {
+		"builtin": true,
+		"browser": true,
+		"node": true
+	},
+	"rules": {
+		"react/react-in-jsx-scope": "off",
+		"react/set-state-in-effect": "warn",
+		"jsx-a11y/prefer-tag-over-role": "warn",
+		"jsx-a11y/label-has-associated-control": "warn"
+	}
+}

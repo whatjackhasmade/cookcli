@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { ClearListButton } from "@/components/Shopping/ClearListButton";
 import { Checklist } from "@/components/Shopping/Checklist";
+import { ClearListButton } from "@/components/Shopping/ClearListButton";
 import { RecipePicker } from "@/components/Shopping/RecipePicker";
 import {
 	aggregateIngredients,

@@ -9,7 +9,7 @@ single source of truth so the two files don't drift.
 Quick reference:
 
 - `npm run dev` / `npm run build` — copy recipe images then run Next.js
-- `npm run fix` — Biome format + lint (this repo uses Biome, not ESLint/Prettier)
+- `npm run fix` — oxfmt format + oxlint lint (this repo uses oxc, not ESLint/Prettier/Biome)
 - Recipes are `.cook` (Cooklang) files under `src/recipes/<category>/`; the
   file tree is the content — there's no database or CMS.
 - `RecipeContext` (`src/components/Recipe/context/index.tsx`) is the single

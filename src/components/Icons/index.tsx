@@ -1,5 +1,4 @@
 import type * as React from "react";
-
 import type { IconSvgProps } from "@/types";
 
 export const Logo: React.FC<IconSvgProps> = ({

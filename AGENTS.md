@@ -20,14 +20,15 @@ diverges from the upstream spec/conventions docs) before reviewing or writing
 - `npm run build` — copies recipe images, then `next build`
 - `npm run start` — runs the production server (after `build`)
 - `npm run images` — runs `scripts/copyImages.ts` directly (see below)
-- `npm run lint` — `biome lint --write`
-- `npm run format` — `biome format --write`
+- `npm run lint` — `oxlint --fix`
+- `npm run format` — `oxfmt`
 - `npm run fix` — format, then lint
 - `npm run test` — `vitest run`
 - Node version is pinned in `.nvmrc` (v22.13.0)
 
-Linting/formatting is Biome (`biome.json`), not ESLint/Prettier — tabs,
-double quotes, organize-imports on save. `prettier` is a devDependency but
+Linting is oxlint (`.oxlintrc.json`) and formatting is oxfmt (`.oxfmtrc.json`),
+not ESLint/Prettier/Biome — tabs, double quotes, sorted imports. Markdown and
+`.cook` files are not formatted. `prettier` is a devDependency but
 unused by any script.
 
 ## Architecture

@@ -103,7 +103,7 @@ export function Search({ recipes }: SearchProps) {
 		: [];
 
 	return (
-		// biome-ignore lint/a11y/noStaticElementInteractions: click-outside-to-dismiss backdrop; keyboard users close via Escape (handled in the keydown listener above)
+		// oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- click-outside-to-dismiss backdrop; keyboard users close via Escape (handled in the keydown listener above)
 		<div
 			className={styles.overlay}
 			onClick={(event) => {

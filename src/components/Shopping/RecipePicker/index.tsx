@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { ChevronDownIcon, MinusIcon, PlusIcon } from "@/components/Icons";
+import type { RecipeSummary } from "@/utils/server";
 import {
 	parseSelectedRecipesParam,
 	serializeSelectedRecipesParam,
 } from "@/utils/shoppingListParams";
-import type { RecipeSummary } from "@/utils/server";
 import styles from "./index.module.css";
 
 export interface SelectedRecipeInfo {

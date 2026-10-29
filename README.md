@@ -32,11 +32,12 @@ automatically — the homepage groups them by their containing directory name.
 - `npm run images` — copy recipe images from `src/recipes/**/*.jpg` into
   `public/recipes/` (`scripts/copyImages.ts`), run automatically before
   `dev`/`build`
-- `npm run lint` — Biome lint (`--write`)
-- `npm run format` — Biome format (`--write`)
+- `npm run lint` — oxlint (`--fix`)
+- `npm run format` — oxfmt
 - `npm run fix` — format, then lint
 
-Linting/formatting is [Biome](https://biomejs.dev/), not ESLint/Prettier.
+Linting/formatting is [oxlint](https://oxc.rs/docs/guide/usage/linter) and
+[oxfmt](https://oxc.rs/docs/guide/usage/formatter), not ESLint/Prettier.
 There is no test suite configured in this repo.
 
 ## More context for AI agents

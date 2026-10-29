@@ -1,11 +1,11 @@
 "use client";
 
-import Cover from "./Cover";
 import { useRecipe } from "./context";
+import Cover from "./Cover";
 import Ingredients from "./Ingredients";
-import styles from "./index.module.css";
 import Servings from "./Servings";
 import Steps from "./Steps";
+import styles from "./index.module.css";
 
 export default function Recipe() {
 	const { recipe } = useRecipe();
