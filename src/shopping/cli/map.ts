@@ -1,7 +1,6 @@
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import readline from "node:readline/promises";
 import type { AggregatedIngredient } from "@/utils";
 import { loadShoppingList } from "../loadShoppingList";
 import { openOcado, pause } from "../ocado/browser";
@@ -10,6 +9,7 @@ import { parsePackSize } from "../parsePackSize";
 import { planTrolley } from "../planTrolley";
 import { ocadoProducts } from "../products";
 import type { Amount, OcadoProduct } from "../types";
+import { ask, menu } from "./prompt";
 
 // `npm run ocado:map -- "<recipes>"` - walks the Unmapped ingredients for a
 // selection, searches Ocado for each, and writes the picked Product into the
@@ -39,9 +39,9 @@ function describeIngredient({
 	return `${name} — ${amountText} (${recipeTitles.join(", ")})`;
 }
 
-function describeResult(result: OcadoSearchResult, index: number) {
+function describeResult(result: OcadoSearchResult) {
 	const unavailable = result.available ? "" : " [unavailable]";
-	return `  ${index + 1}. ${result.name} — ${result.size} — £${result.price}${unavailable}`;
+	return `${result.name} — ${result.size} — £${result.price}${unavailable}`;
 }
 
 // Accepts Ocado-style sizes ("400g", "6 per pack") or "<number> <unit>".
@@ -72,10 +72,6 @@ async function main() {
 		return;
 	}
 
-	const rl = readline.createInterface({
-		input: process.stdin,
-		output: process.stdout,
-	});
 	const { browser, page, saveSession } = await openOcado();
 
 	try {
@@ -88,37 +84,24 @@ async function main() {
 			let done = false;
 
 			while (!done) {
+				console.log(`  Searching Ocado for "${term}"…`);
 				await pause();
 				const results = await searchProducts(page, term);
-				results.forEach((result, i) => console.log(describeResult(result, i)));
-				if (results.length === 0) {
-					console.log("  No results.");
-				}
+				const choice = await menu(results.map(describeResult));
 
-				const answer = (
-					await rl.question(
-						"  <n> pick · p<n> pick as Pantry item · /<term> search · s skip · q quit: ",
-					)
-				).trim();
-
-				if (answer === "q") {
+				if (choice.action === "quit") {
 					return;
 				}
-				if (answer === "s") {
+				if (choice.action === "skip") {
 					break;
 				}
-				if (answer.startsWith("/")) {
-					term = answer.slice(1).trim() || term;
+				if (choice.action === "search") {
+					term = (await ask("  Search for: ", term)) || term;
 					continue;
 				}
 
-				const pantry = answer.startsWith("p");
-				const picked = results[Number(answer.replace(/^p/, "")) - 1];
-				if (!picked) {
-					console.log("  Not one of the options.");
-					continue;
-				}
-
+				const picked = results[choice.index];
+				const { pantry } = choice;
 				const existing = products.find(
 					(product) => product.retailerProductId === picked.retailerProductId,
 				);
@@ -129,7 +112,7 @@ async function main() {
 					let packSize = parsePackSize(picked.size);
 					while (!packSize) {
 						packSize = parseTypedPackSize(
-							await rl.question(
+							await ask(
 								`  Pack size for "${picked.size}" (e.g. 400g, 6 item): `,
 							),
 						);
@@ -152,7 +135,6 @@ async function main() {
 			}
 		}
 	} finally {
-		rl.close();
 		await saveSession();
 		await browser.close();
 	}
