@@ -52,7 +52,7 @@ export const ocadoProducts: OcadoProduct[] = [
 			quantity: 250,
 			unit: "g",
 		},
-		ingredients: ["butter"],
+		ingredients: ["butter", "cold butter"],
 	},
 	{
 		retailerProductId: "647378011",
@@ -103,5 +103,165 @@ export const ocadoProducts: OcadoProduct[] = [
 			unit: "ml",
 		},
 		ingredients: ["cream"],
+	},
+	{
+		retailerProductId: "232701011",
+		productId: "472975ad-8386-42ec-a744-7ff83cef5715",
+		name: "East End Garam Masala Powder",
+		packSize: {
+			quantity: 100,
+			unit: "g",
+		},
+		ingredients: ["garam masala"],
+	},
+	{
+		retailerProductId: "559681011",
+		productId: "863541a1-5b01-450f-b237-9d43748717d9",
+		name: "Wonderfully Curious Peeled Garlic",
+		packSize: {
+			quantity: 100,
+			unit: "g",
+		},
+		ingredients: ["garlic cloves"],
+	},
+	{
+		retailerProductId: "298832011",
+		productId: "f1fedad8-85e1-4d14-aba1-8dff5da83218",
+		name: "KTC Minced Ginger & Garlic",
+		packSize: {
+			quantity: 210,
+			unit: "g",
+		},
+		ingredients: ["ginger"],
+	},
+	{
+		retailerProductId: "647216011",
+		productId: "634241ac-a4ee-4b23-bafe-e7548912ac44",
+		name: "Bart Kashmiri Chilli",
+		packSize: {
+			quantity: 19,
+			unit: "g",
+		},
+		ingredients: ["kashmiri red chilli powder"],
+	},
+	{
+		retailerProductId: "294495011",
+		productId: "eca42793-3662-4353-8e9d-92971cb782de",
+		name: "Mutti Classic Italian Tomato Passata",
+		packSize: {
+			quantity: 700,
+			unit: "g",
+		},
+		ingredients: ["mutti passata"],
+	},
+	{
+		retailerProductId: "508803011",
+		productId: "f32b185b-a514-431f-8146-8d20870d73fb",
+		name: "La Espanola Extra Virgin Olive Oil",
+		packSize: {
+			quantity: 1,
+			unit: "l",
+		},
+		ingredients: ["oil"],
+	},
+	{
+		retailerProductId: "693660011",
+		productId: "e632a09d-4775-48bc-a6fa-ee14f4bec8d4",
+		name: "All The Aunties - Garlic and Herb Paneer",
+		packSize: {
+			quantity: 200,
+			unit: "g",
+		},
+		ingredients: ["paneer"],
+	},
+	{
+		retailerProductId: "37324011",
+		productId: "e5b24e2b-1d15-4c6c-aaec-3ac0e611876f",
+		name: "Birds Eye Petits Pois",
+		packSize: {
+			quantity: 960,
+			unit: "g",
+		},
+		ingredients: ["petits pois"],
+	},
+	{
+		retailerProductId: "606818011",
+		productId: "e065b422-34c4-484a-a687-27383018f3e0",
+		name: "Rajah Chilli Powder Ground Spices 100g",
+		packSize: {
+			quantity: 100,
+			unit: "g",
+		},
+		ingredients: ["red chilli powder"],
+	},
+	{
+		retailerProductId: "367188011",
+		productId: "0033be9c-3f8d-484d-8004-dd98c3bc2afc",
+		name: "Costa Fine Sea Salt",
+		packSize: {
+			quantity: 750,
+			unit: "g",
+		},
+		ingredients: ["salt"],
+	},
+	{
+		retailerProductId: "562557011",
+		productId: "cca11825-20f5-4a25-8888-9e9fd821872b",
+		name: "Ocado Granulated White Sugar",
+		packSize: {
+			quantity: 1,
+			unit: "kg",
+		},
+		ingredients: ["sugar"],
+	},
+	{
+		retailerProductId: "57083011",
+		productId: "77c0a542-7041-446e-acf5-49237601f1ea",
+		name: "Ocado Italian Tomato Puree Double Concentrated",
+		packSize: {
+			quantity: 200,
+			unit: "g",
+		},
+		ingredients: ["tomato puree"],
+	},
+	{
+		retailerProductId: "269593011",
+		productId: "e371bf60-85ed-4108-9b92-08360ba58186",
+		name: "Ocado Ground Cinnamon",
+		packSize: {
+			quantity: 35,
+			unit: "g",
+		},
+		ingredients: ["cinnamon"],
+	},
+	{
+		retailerProductId: "11205011",
+		productId: "0786d4e9-208e-4dab-9b8c-b625ec375b99",
+		name: "Tate & Lyle Fairtrade Demerara Sugar",
+		packSize: {
+			quantity: 1,
+			unit: "kg",
+		},
+		ingredients: ["demerara sugar"],
+	},
+	{
+		retailerProductId: "64863011",
+		productId: "564146bb-6db9-4d16-8be9-0ca1e727825d",
+		name: "Ocado Granny Smith Apples",
+		packSize: {
+			quantity: 6,
+			unit: "item",
+		},
+		ingredients: ["green apples"],
+	},
+	{
+		retailerProductId: "407678011",
+		productId: "63aa7cec-4b34-400c-b02e-906283a65fc5",
+		name: "Ocado British Plain Flour",
+		packSize: {
+			quantity: 1.5,
+			unit: "kg",
+		},
+		ingredients: ["plain flour"],
 	},
 ];
