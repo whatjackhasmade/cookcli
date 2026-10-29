@@ -136,6 +136,11 @@ async function mapSelection(
 	return "done";
 }
 
+// Titles may start with an emoji, which would otherwise sort first.
+function sortKey(title: string) {
+	return title.replace(/^[^\p{L}\p{N}]+/u, "");
+}
+
 // Lists every recipe with how many of its Ingredients still need mapping,
 // fewest-to-do last so the useful ones come first.
 async function pickRecipe(products: OcadoProduct[]): Promise<string | null> {
@@ -147,8 +152,6 @@ async function pickRecipe(products: OcadoProduct[]): Promise<string | null> {
 			return { summary, unmapped: unmapped.length, total: shoppingList.length };
 		}),
 	);
-	// Titles may start with an emoji, which would otherwise sort first.
-	const sortKey = (title: string) => title.replace(/^[^\p{L}\p{N}]+/u, "");
 	rows.sort(
 		(a, b) =>
 			Number(a.unmapped === 0) - Number(b.unmapped === 0) ||
