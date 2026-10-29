@@ -24,6 +24,13 @@ diverges from the upstream spec/conventions docs) before reviewing or writing
 - `npm run format` — `oxfmt`
 - `npm run fix` — format, then lint
 - `npm run test` — `vitest run`
+- `npm run ocado -- "<recipes>" [--pantry "a,b"] [--dry-run]` — local-only
+  Playwright CLI that fills the Ocado Trolley for a `/shopping` selection;
+  `npm run ocado:map -- "<recipes>"` builds the Product mapping
+  (`src/shopping/products.ts`). Everything for this lives in `src/shopping/`;
+  terms are in `CONTEXT.md` ("Ocado shopping"). Login session is cached in
+  the gitignored `.ocado/`; credentials are `OCADO_EMAIL`/`OCADO_PASSWORD`
+  in `.env.local`.
 - Node version is pinned in `.nvmrc` (v22.13.0)
 
 Linting is oxlint (`.oxlintrc.json`) and formatting is oxfmt (`.oxfmtrc.json`),
@@ -87,7 +94,7 @@ provider/context to wire up for it.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
-# This is NOT the Next.js you know
+## This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 

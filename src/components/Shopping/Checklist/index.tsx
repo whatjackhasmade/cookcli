@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { OcadoStatusTag } from "@/shopping/components/OcadoStatusTag";
+import type { OcadoStatus } from "@/shopping/ocadoStatus";
 import { uppercaseFirstLetter } from "@/utils";
 import type { AggregatedIngredient } from "@/utils/aggregateIngredients";
 import { SHOPPING_CHECKED_STORAGE_KEY } from "../constants";
@@ -8,6 +10,12 @@ import styles from "./index.module.css";
 
 interface ChecklistProps {
 	ingredients: AggregatedIngredient[];
+	// What the Ocado CLI will do with each line, keyed by lowercased name.
+	ocado?: {
+		statuses: Record<string, OcadoStatus>;
+		recipesParam: string;
+		pantry: string[];
+	};
 }
 
 function readStoredChecked(): Set<string> {
@@ -19,7 +27,7 @@ function readStoredChecked(): Set<string> {
 	}
 }
 
-export function Checklist({ ingredients }: ChecklistProps) {
+export function Checklist({ ingredients, ocado }: ChecklistProps) {
 	const [checked, setChecked] = useState<Set<string>>(new Set());
 	const [hasLoaded, setHasLoaded] = useState(false);
 	const [hideChecked, setHideChecked] = useState(false);
@@ -122,6 +130,14 @@ export function Checklist({ ingredients }: ChecklistProps) {
 										</span>
 									</span>
 								</label>
+								{ocado?.statuses[key] && (
+									<OcadoStatusTag
+										ingredientKey={key}
+										pantry={ocado.pantry}
+										recipesParam={ocado.recipesParam}
+										status={ocado.statuses[key]}
+									/>
+								)}
 							</li>
 						);
 					})}

@@ -1,0 +1,39 @@
+.command {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 0.75rem;
+	padding: 0.6rem 0.75rem;
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-md);
+	background: var(--surface);
+}
+
+.code {
+	flex: 1;
+	min-width: 0;
+	overflow-x: auto;
+	white-space: nowrap;
+	font-size: 0.8rem;
+	color: var(--foreground);
+}
+
+.copy {
+	flex-shrink: 0;
+	padding: 0.3rem 0.65rem;
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-sm);
+	background: transparent;
+	color: var(--color-muted-foreground);
+	font-size: 0.8rem;
+	cursor: pointer;
+	appearance: none;
+	transition:
+		background-color 0.15s ease,
+		color 0.15s ease;
+}
+
+.copy:hover {
+	background: var(--surface-hover);
+	color: var(--foreground);
+}

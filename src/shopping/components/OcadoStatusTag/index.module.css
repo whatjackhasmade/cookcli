@@ -1,0 +1,45 @@
+.tag,
+.unmapped {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: 0.35rem;
+	padding-left: 1.7rem;
+	font-size: 0.75rem;
+	color: var(--color-muted-foreground);
+}
+
+.unmapped {
+	font-style: italic;
+}
+
+.product {
+	color: var(--foreground);
+}
+
+.warning {
+	padding: 0.05rem 0.4rem;
+	border: 1px solid var(--ingredient-quantity-color);
+	border-radius: var(--radius-sm);
+	color: var(--ingredient-quantity-color);
+}
+
+.toggle {
+	padding: 0.15rem 0.5rem;
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-sm);
+	background: transparent;
+	color: var(--color-muted-foreground);
+	font-size: 0.75rem;
+	cursor: pointer;
+	appearance: none;
+	transition:
+		background-color 0.15s ease,
+		color 0.15s ease;
+}
+
+.toggle:hover {
+	background: var(--surface-hover);
+	color: var(--foreground);
+}

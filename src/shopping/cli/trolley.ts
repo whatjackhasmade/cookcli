@@ -4,6 +4,7 @@ import { loadShoppingList } from "../loadShoppingList";
 import { openOcado, pause } from "../ocado/browser";
 import { ensureLoggedIn } from "../ocado/login";
 import { type EnsureResult, getTrolley, setPackCount } from "../ocado/trolley";
+import { parsePantryParam } from "../ocadoStatus";
 import {
 	type TrolleyPlan,
 	type TrolleyProductLine,
@@ -102,12 +103,7 @@ async function main() {
 		process.exit(1);
 	}
 
-	const enabledPantry = new Set(
-		values.pantry
-			.split(",")
-			.map((name) => name.trim().toLowerCase())
-			.filter(Boolean),
-	);
+	const enabledPantry = new Set(parsePantryParam(values.pantry));
 
 	const { selectedRecipes, shoppingList } =
 		await loadShoppingList(recipesParam);
