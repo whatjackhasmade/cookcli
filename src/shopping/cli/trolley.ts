@@ -77,6 +77,19 @@ function shuffle<T>(items: T[]): T[] {
 	return shuffled;
 }
 
+// Green: Packs added. Amber: the Trolley already had enough. Red: not
+// added. Plain text when output isn't a terminal or NO_COLOR is set.
+const useColour = process.stdout.isTTY && !process.env.NO_COLOR;
+const OUTCOME_COLOURS: Record<EnsureResult["outcome"], string> = {
+	added: "32",
+	already: "33",
+	failed: "31",
+};
+
+function colour(code: string, text: string) {
+	return useColour ? `\x1b[${code}m${text}\x1b[0m` : text;
+}
+
 function resultText(line: TrolleyProductLine, result: EnsureResult) {
 	switch (result.outcome) {
 		case "added":
@@ -144,7 +157,9 @@ async function main() {
 		const progress = `[${index + 1}/${queue.length}]`;
 		const needsChange = (trolley.get(line.product.productId) ?? 0) < line.packs;
 		if (needsChange) {
-			console.log(`${progress} Adding ${line.product.name} × ${line.packs}…`);
+			console.log(
+				colour("2", `${progress} Adding ${line.product.name} × ${line.packs}…`),
+			);
 			await pause();
 		}
 		try {
@@ -157,7 +172,9 @@ async function main() {
 			);
 			outcomes.push({ line, result });
 		} catch (error) {
-			console.error(`${line.product.name}: ${(error as Error).message}`);
+			console.error(
+				colour("31", `${line.product.name}: ${(error as Error).message}`),
+			);
 			outcomes.push({
 				line,
 				result: {
@@ -168,15 +185,21 @@ async function main() {
 			});
 		}
 		const left = queue.length - index - 1;
+		const { result } = outcomes.at(-1)!;
 		console.log(
-			`${progress} ${resultText(line, outcomes.at(-1)!.result)} — ${left === 0 ? "done" : `${left} left`}`,
+			colour(
+				OUTCOME_COLOURS[result.outcome],
+				`${progress} ${resultText(line, result)} — ${left === 0 ? "done" : `${left} left`}`,
+			),
 		);
 	}
 
 	const byOutcome = (outcome: EnsureResult["outcome"]) =>
 		outcomes
 			.filter(({ result }) => result.outcome === outcome)
-			.map(({ line, result }) => resultText(line, result));
+			.map(({ line, result }) =>
+				colour(OUTCOME_COLOURS[result.outcome], resultText(line, result)),
+			);
 
 	console.log("\n— Summary —");
 	printSection("Added", byOutcome("added"));
