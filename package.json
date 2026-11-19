@@ -19,7 +19,7 @@
 		"ocado": "tsx src/shopping/cli/trolley.ts"
 	},
 	"dependencies": {
-		"next": "16.4.3",
+		"next": "16.4.6",
 		"react": "19.3.1",
 		"react-dom": "19.3.1"
 	},
@@ -28,14 +28,14 @@
 		"@types/node": "26.6.6",
 		"@types/react": "19.3.0",
 		"@types/react-dom": "19.3.0",
-		"concurrently": "10.0.6",
+		"concurrently": "10.0.7",
 		"gray-matter": "4.0.3",
-		"oxfmt": "0.75.0",
-		"oxlint": "1.90.0",
-		"playwright": "1.64.1",
+		"oxfmt": "0.79.0",
+		"oxlint": "1.94.0",
+		"playwright": "1.65.1",
 		"sharp": "0.35.5",
 		"tsx": "4.23.15",
 		"typescript": "7.0.2",
-		"vitest": "5.0.5"
+		"vitest": "5.1.1"
 	}
 }
