@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+import { Link } from "@/components/Link";
 import type { FlatItem } from "@/utils/server";
 import { ingredientCheckKey, useRecipe } from "../context";
 import styles from "./index.module.css";
@@ -40,29 +42,44 @@ export default function Steps() {
 									const checked = checkedIngredients.has(checkKey);
 
 									return (
-										<button
-											className={`${styles.ingredient}${checked ? ` ${styles.checked}` : ""}`}
-											key={keyFromStep(step, groupIndex, stepIndex)}
-											type="button"
-											aria-pressed={checked}
-											onClick={() => {
-												setCheckedIngredients((prev) => {
-													const newSet = new Set(prev);
-													if (newSet.has(checkKey)) {
-														newSet.delete(checkKey);
-													} else {
-														newSet.add(checkKey);
-													}
-													return newSet;
-												});
-											}}
-										>
-											<span className={styles.ingredientName}>{step.name}</span>
-											<span className={styles.ingredientQuantity}>
-												({step.quantity}
-												{step.units ? ` ${step.units}` : ""})
-											</span>
-										</button>
+										<Fragment key={keyFromStep(step, groupIndex, stepIndex)}>
+											<button
+												className={`${styles.ingredient}${checked ? ` ${styles.checked}` : ""}`}
+												type="button"
+												aria-pressed={checked}
+												onClick={() => {
+													setCheckedIngredients((prev) => {
+														const newSet = new Set(prev);
+														if (newSet.has(checkKey)) {
+															newSet.delete(checkKey);
+														} else {
+															newSet.add(checkKey);
+														}
+														return newSet;
+													});
+												}}
+											>
+												<span className={styles.ingredientName}>
+													{step.name}
+												</span>
+												<span className={styles.ingredientQuantity}>
+													({step.quantity}
+													{step.units ? ` ${step.units}` : ""})
+												</span>
+											</button>
+											{/* Separate from the button: a link can't nest inside one. */}
+											{step.href && (
+												<Link
+													className={styles.recipeLink}
+													next={{ href: step.href }}
+												>
+													<span aria-hidden="true">↗</span>
+													<span className="sr-only">
+														Open the {step.name} recipe
+													</span>
+												</Link>
+											)}
+										</Fragment>
 									);
 								}
 								case "timer":

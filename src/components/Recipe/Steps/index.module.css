@@ -114,3 +114,9 @@
 	color: var(--timer-color);
 	font-weight: 500;
 }
+
+.recipeLink {
+	margin-left: 0.25rem;
+	color: var(--ingredient-color);
+	text-decoration: none;
+}
