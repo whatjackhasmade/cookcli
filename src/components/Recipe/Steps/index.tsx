@@ -73,10 +73,9 @@ export default function Steps() {
 													className={styles.recipeLink}
 													next={{ href: step.href }}
 												>
-													<span aria-hidden="true">↗</span>
-													<span className="sr-only">
-														Open the {step.name} recipe
-													</span>
+													View <span className="sr-only">{step.name}</span>{" "}
+													recipe
+													<span aria-hidden="true"> →</span>
 												</Link>
 											)}
 										</Fragment>

@@ -116,7 +116,26 @@
 }
 
 .recipeLink {
-	margin-left: 0.25rem;
+	display: inline-block;
+	margin-left: 0.35rem;
+	padding: 0.15rem 0.6rem;
+	border: 1px solid var(--ingredient-color);
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--ingredient-color) 20%, transparent);
 	color: var(--ingredient-color);
+	font-size: 0.85em;
+	font-weight: 600;
 	text-decoration: none;
+	white-space: nowrap;
+	transition: background-color 0.15s ease;
+}
+
+.recipeLink:hover {
+	background: color-mix(in srgb, var(--ingredient-color) 35%, transparent);
+	text-decoration: underline;
+}
+
+.recipeLink:focus-visible {
+	outline: 2px solid var(--ingredient-color);
+	outline-offset: 2px;
 }
