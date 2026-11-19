@@ -26,6 +26,8 @@ export interface FlatIngredientItem {
 	name: string;
 	quantity: number | string;
 	units: string;
+	// Set when the ingredient is another recipe in this cookbook.
+	href?: string;
 }
 
 export interface FlatCookwareItem {

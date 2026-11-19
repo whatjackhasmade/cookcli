@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronDownIcon } from "@/components/Icons";
+import { Link } from "@/components/Link";
 import { uppercaseFirstLetter } from "@/utils";
 import { ingredientCheckKey, useRecipe } from "../context";
 import styles from "./index.module.css";
@@ -106,9 +107,15 @@ export default function Ingredients() {
 											</label>
 										</td>
 										<td>
-											<label htmlFor={id} className={styles.cellLabel}>
-												{uppercaseFirstLetter(ingredient.name)}
-											</label>
+											{ingredient.href ? (
+												<Link next={{ href: ingredient.href }}>
+													{uppercaseFirstLetter(ingredient.name)}
+												</Link>
+											) : (
+												<label htmlFor={id} className={styles.cellLabel}>
+													{uppercaseFirstLetter(ingredient.name)}
+												</label>
+											)}
 										</td>
 										<td>
 											<label htmlFor={id} className={styles.cellLabel}>

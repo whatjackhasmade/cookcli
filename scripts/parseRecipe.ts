@@ -84,6 +84,8 @@ function toFlatIngredient(
 		index,
 		name: ingredient.name,
 		...flattenQuantity(ingredient.quantity),
+		// `@../addons/tzatziki{}` references another recipe; slugs are bare filenames.
+		...(ingredient.reference && { href: `/${ingredient.reference.name}` }),
 	};
 }
 
