@@ -9,7 +9,7 @@ export function modifyIngredientQuantity(
 	ingredient: FlatIngredientItem,
 	servingsMultiplier: number,
 ) {
-	const quantity = (() => {
+	const scaled = (() => {
 		// Check if the quantity is a number or a string that converts to a valid number
 		if (typeof ingredient.quantity === "number") {
 			return ingredient.quantity * servingsMultiplier;
@@ -23,6 +23,10 @@ export function modifyIngredientQuantity(
 
 		return ingredient.quantity;
 	})();
+
+	// Cap at 3 decimal places so e.g. 2/3 tsp shows as 0.667, not 0.6666666666666666.
+	const quantity =
+		typeof scaled === "number" ? Math.round(scaled * 1000) / 1000 : scaled;
 
 	return {
 		...ingredient,

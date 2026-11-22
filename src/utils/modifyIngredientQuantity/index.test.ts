@@ -34,6 +34,15 @@ describe("modifyIngredientQuantity", () => {
 		expect(result.quantity).toBe("to taste");
 	});
 
+	it("rounds to at most 3 decimal places", () => {
+		expect(
+			modifyIngredientQuantity(ingredient({ quantity: 2 / 3 }), 1).quantity,
+		).toBe(0.667);
+		expect(
+			modifyIngredientQuantity(ingredient({ quantity: 0.1 }), 3).quantity,
+		).toBe(0.3);
+	});
+
 	it("is a no-op at multiplier 1", () => {
 		const result = modifyIngredientQuantity(ingredient({ quantity: 100 }), 1);
 		expect(result.quantity).toBe(100);
